@@ -93,7 +93,7 @@ typedef long double lld;
 #define debug(x)
 #endif
 
-//void _print(ll t) {cerr << t;}
+void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
 void _print(char t) {cerr << t;}

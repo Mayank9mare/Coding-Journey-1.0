@@ -81,39 +81,60 @@ const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
 
-
 using namespace std;
-typedef unsigned long long ull;
-typedef long double lld;
-// typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
-
-#ifndef KNIGHTMARE
-#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
-#else
-#define debug(x)
-#endif
-
-//void _print(ll t) {cerr << t;}
-void _print(int t) {cerr << t;}
-void _print(string t) {cerr << t;}
-void _print(char t) {cerr << t;}
-void _print(lld t) {cerr << t;}
-void _print(double t) {cerr << t;}
-void _print(ull t) {cerr << t;}
-
-template <class T, class V> void _print(pair <T, V> p);
-template <class T> void _print(vector <T> v);
-template <class T> void _print(set <T> v);
-template <class T, class V> void _print(map <T, V> v);
-template <class T> void _print(multiset <T> v);
-template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.ff); cerr << ","; _print(p.ss); cerr << "}";}
-template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
+const int MAX=2e6+10;
+ll fac[MAX];
+ll infact[MAX];
+int modu(ll x){
+while(x<0)
+  x+=mod;
+return (x%mod);
+}
+ll power(ll x,ll y){
+    ll p=mod;
+    ll res =1;
+    x=x%p;
+    while(y>0){
+        if(y&1){
+            res=(res*x)%p;
+        }
+            y=y>>1;
+            x=(x*x)%p;
+        }
+        return res;
 
+    
+}
+ll modInverse(ll n){
+    ll p=mod;
+    return power(n,p-2);
+}
+
+int a[100001],f[100001],c[100001];
 int solve(){
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+        f[a[i]]++;
+    }
+    for(int i=1;i<=100000;i++){
+        for(int j=i;j<=100000;j+=i){
+            c[i]+=f[j];
+            c[i]%=mod;
+        }
+    }
+    for(int i=100000;i>=1;i--){
+        int tot=((power(2,c[i]))-1+mod)%mod;
+        f[i]=tot%mod;
+        for(int j=2*i;j<=100000;j+=i){
+            f[i]=(f[i]-f[j]+mod)%mod;
+            
+        }
+    }
+    cout<<f[1]<<endl;
+
     return 0;
 
 }
@@ -121,12 +142,8 @@ int solve(){
 
 signed main()
 {
-    #ifndef KNIGHTMARE
-    freopen("Error.txt", "w", stderr);
-    #endif
-    
     minato;
-    w(t)
+    //w(t)
     solve();
 
 

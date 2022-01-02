@@ -75,8 +75,8 @@
 #define precision(x) cout << fixed << setprecision(x);
 #define gcd(a,b)    __gcd((a),(b))
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
-//#define endl "\n"
-//#define int long long
+#define endl "\n"
+#define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
@@ -112,8 +112,74 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
+const int MAX=2505;
+ll fac[MAX];
+ll infact[MAX];
+int modu(ll x){
+while(x<0)
+  x+=mod;
+return (x%mod);
+}
+ll power(ll x,ll y){
+    ll p=mod;
+    ll res =1;
+    x=x%p;
+    while(y>0){
+        if(y&1){
+            res=(res*x)%p;
+        }
+            y=y>>1;
+            x=(x*x)%p;
+        }
+        return res;
 
+    
+}
+ll modInverse(ll n){
+    ll p=mod;
+    return power(n,p-2);
+}
+ll nCrModFermat(ll n,ll r){
+    if(r>n)return 0;
+    if(r==n)return 1;
+    ll p=mod;
+    if(r==0){
+        return 1;
+    }
+    //cout<<1<<endl;
+    
+  
+    return(fac[n]%mod*(infact[r])%p*(infact[n-r])%p)%mod;
+
+}
+void preprocess(){
+    fac[0]=1;
+    infact[0]=1;
+    //cout<<1<<endl;
+    for(int i=1;i<MAX;i++){
+        fac[i]=(fac[i-1]%mod*i%mod)%mod;
+        infact[i]=(ll)infact[i - 1] * power(i, mod - 2) % mod;
+        //cout<<fac[i]<<sp;
+    }
+}
+int f[2505];
 int solve(){
+    int n,k;
+    cin>>n>>k;
+    for(int i=0;i<n-1;i++){
+        int x;
+        cin>>x;
+    }
+    for(int i=1;i<=k;i++){
+        int tot=(i*power(i-1,n-1))%mod;
+        f[i]=tot;
+        for(int j=1;j<i;j++){
+            f[i]=(f[i]-(nCrModFermat(i,j)*f[j])%mod+mod)%mod;
+        }
+        debug(f[i]);
+    }
+    cout<<f[k]<<endl;
+
     return 0;
 
 }
@@ -126,7 +192,8 @@ signed main()
     #endif
     
     minato;
-    w(t)
+    preprocess();
+    //w(t)
     solve();
 
 
