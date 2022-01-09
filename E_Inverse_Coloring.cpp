@@ -76,7 +76,7 @@
 #define gcd(a,b)    __gcd((a),(b))
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
 //#define endl "\n"
-#define int long long
+//#define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
@@ -113,58 +113,7 @@ template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_pr
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
 
-int n;
-vector<vector<int>> adj;
-int sum;
-vector<int> sub;
-void dfs(int u,int p){
-    sub[u]=1;
-    for(int x:adj[u]){
-        if(x==p)continue;
-        dfs(x,u);
-        sub[u]+=sub[x];
-    }
-}
-void dfs2(int u,int p,int & ans){
-    ans=max(ans,sum);
-    for(int x:adj[u]){
-        if(x==p)continue;
-        //reroot
-        int root=sub[u];
-        int child=sub[x];
-        int prev=sum;
-        sub[u]=sub[u]-sub[x];
-        sub[x]=n;
-        sum-=(root+child);
-        sum+=(sub[u]+sub[x]);
-        dfs2(x,u,ans);
-        sum=prev;
-        sub[u]=root;
-        sub[x]=child;
-
-
-    }
-
-}
 int solve(){
-    //int n;
-    cin>>n;
-    sum=0;
-    adj.assign(n,vector<int>(0));
-    sub.assign(n,0);
-    for(int i=0;i<n-1;i++){
-        int x,y;
-        cin>>x>>y;
-        x--;y--;
-        adj[x].pb(y);
-        adj[y].pb(x);
-    }
-    dfs(0,-1);
-    for(int i=0;i<n;i++)sum+=sub[i];
-    int ans=sum;
-    dfs2(0,-1,ans);
-    cout<<ans<<endl;
-
     return 0;
 
 }
@@ -177,7 +126,7 @@ signed main()
     #endif
     
     minato;
-    //w(t)
+    w(t)
     solve();
 
 
