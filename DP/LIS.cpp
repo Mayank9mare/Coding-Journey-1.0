@@ -77,7 +77,6 @@
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
 //#define endl "\n"
 //#define int long long
-#define f(x) (x)*(x)
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
@@ -113,11 +112,34 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
+int lis(const vector<int> &A) {
+int n=A.size();
+int dp[n];
+
+int minLast[n];
+minLast[1]=A[0];
+dp[0]=1;
+int len=1;
+for(int i=1;i<n;i++){
+    if(A[i]>minLast[len]){
+        len++;
+        dp[i]=len;
+        minLast[len]=A[i];
+        
+    }
+    else{
+        int p=upper_bound(minLast+1,minLast+len+1,A[i])-minLast;
+        if(minLast[p-1]==A[i]){
+            p--;
+        }
+        dp[i]=p;
+        minLast[p]=A[i];
+    }
+}
+return *max_element(dp,dp+n);
+}
 
 int solve(){
-    int a=10;
-    int b=f(a+1);
-    cout<<b<<endl;
     return 0;
 
 }
