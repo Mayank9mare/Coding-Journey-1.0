@@ -112,30 +112,30 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-vector<vector<int>> v;
-vector<int> a;
-void build(int node ,int l,int r){
-    if(r-l<2){
-        v[node].pb(a[l]);
-        return;
-    }
-    int m=(l+r)/2;
-    build(2*node,l,m);
-    build(2*node+1,m,r);
-    merge(v[2*node].begin(),v[2*node].end(),v[2*node +1].begin(),v[2*node +1].end(),back_inserter(v[node]));
-    return;
-
-
+#define px second
+#define py first
+typedef pair<long long, long long> pairll;
+pairll pnts [MAX];
+int compare(pairll a, pairll b)
+{ 
+        return a.px<b.px; 
 }
-int qry(int node,int x,int y,int k,int l,int r){
-    if(x>=r ||l>=y){
-        return 0;
-    }
-    if(x<=l && r<=y){
-        return v[node].size()-(upper_bound(all(v[node]),k)-v[node].begin());
-    }
-    int m=(l+r)/2;
-    return qry(2*node,x,y,k,l,m)+qry(2*node+1,x,y,k,m,r);
+double closest_pair(pairll pnts[],int n)
+{
+        sort(pnts,pnts+n,compare);
+        double best=INF;
+        set<pairll> box;
+        box.insert(pnts[0]);
+        int left = 0;
+        for (int i=1;i<n;++i)
+        {
+            while (left<i && pnts[i].px-pnts[left].px > best)
+                box.erase(pnts[left++]);
+            for(typeof(box.begin()) it=box.lower_bound(make_pair(pnts[i].py-best, pnts[i].px-best));it!=box.end() && pnts[i].py+best>=it->py;it++)
+                best = min(best, sqrt(pow(pnts[i].py - it->py, 2.0)+pow(pnts[i].px - it->px, 2.0)));
+            box.insert(pnts[i]);
+        }
+        return best;
 }
 int solve(){
     return 0;
