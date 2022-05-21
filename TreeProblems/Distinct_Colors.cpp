@@ -113,35 +113,62 @@ template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_pr
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
 vector<int> color,distinct;
-vector<set<int>*> subtree;
+vector<set<int>*> sub;
+vector<vector<int>> adj;
  
-void dfs(int i,int parent = -1){
-	int largest = -1;
-	vector<int> children;
-	for(int node : graph[i]){
-		if(node != parent){
-			dfs(node,i);
-			children.push_back(node);
-			if(largest == -1 || subtree[largest]->size() < subtree[node]->size()){
-				largest = node;
+void dfs(int s,int p){
+	int biggest=-1;
+	int sz=0;
+	for(int x:adj[s]){
+		if(x!=p){
+			dfs(x,s);
+			if(biggest==-1 || sub[biggest]->size()<sub[x]->size()){
+				biggest=x;
 			}
 		}
 	}
-	if(largest == -1){
-		subtree[i] = new set<int>; // new set for leaf node
+	if(biggest==-1){
+		sub[s]=new set<int>;
+
+
 	}
-	else{
-		subtree[i] = subtree[largest]; // largest sized child
+	else {
+		sub[s]=sub[biggest];
 	}
-	
-	for(int child : children){
-		if(child == largest)continue;
-		subtree[i]->insert(subtree[child]->begin(),subtree[child]->end());
+	for(int x:adj[s]){
+		if(x==p)continue;
+		if(x==biggest)continue;
+		sub[s]->insert(sub[x]->begin(),sub[x]->end());
 	}
-	subtree[i]->insert(color[i]);
-	distinct[i] = subtree[i]->size();
+	sub[s]->insert(color[s]);
+	distinct[s]=sub[s]->size();
 }
 int solve(){
+	int n;
+	cin>>n;
+	adj.assign(n,vector<int>(0));
+	color.assign(n,0);
+	distinct.assign(n,0);
+	sub.resize(n);
+	for(int i=0;i<n;i++){
+		sub[i]=new set<int> ;
+	}
+    for(int i=0;i<n;i++){
+		cin>>color[i];
+	}
+	for(int i=0;i<n-1;i++){
+		int x,y;
+		cin>>x>>y;
+		x--;y--;
+		adj[x].pb(y);
+		adj[y].pb(x);
+	}
+	dfs(0,-1);
+	for(int i=0;i<n;i++){
+		cout<<distinct[i]<<sp;
+	}
+	nl;
+
     return 0;
 
 }
@@ -154,7 +181,7 @@ signed main()
     #endif
     
     minato;
-    w(t)
+   // w(t)
     solve();
 
 
