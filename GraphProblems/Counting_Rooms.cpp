@@ -112,46 +112,45 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-
-
-//Tutorial : https://blog.anudeep2011.com/heavy-light-decomposition/
-
-// HLD(curNode, Chain):
-//     Add curNode to curChain
-//     If curNode is LeafNode: return                    //Nothing left to do
-//     sc := child node with maximum sub-tree size       //sc is the special child
-//     HLD(sc, Chain)                                    //Extend current chain to special child
-//     for each child node cn of curNode:                //For normal childs
-//         if cn != sc: HLD(cn, newChain)                //As told above, for each normal child, a new chain starts
-const int N=2e5;
-int chainNo=0,chainHead[N],chainPos[N],chainInd[N],chainSize[N];//chain head intialised with 0
-void hld(int cur) {
-    if(chainHead[chainNo] == -1) chainHead[chainNo]=cur;
-    chainInd[cur] = chainNo;
-    chainPos[cur] = chainSize[chainNo];
-    chainSize[chainNo]++;
-
-    int ind = -1,mai = -1;
-    for(int i = 0; i < adj[cur].sz; i++) {         
-        if(subsize[ adj[cur][i] ] > mai) {
-            mai = subsize[ adj[cur][i] ];
-            ind = i;
-        }
-    }
-
-    if(ind >= 0) hld( adj[cur][ind] );
-
-    for(int i = 0; i < adj[cur].sz; i++) {
-        if(i != ind) {
-            chainNo++;
-            hld( adj[cur][i] );
+int vis[1001][1001];
+int n,m;
+void dfs(int i,int j,vector<string> &v){
+    
+    for(int k=0;k<4;k++){
+        int x=i+dx[k];
+        int y=j+dy[k];
+        // debug(x);
+        // debug(y);
+        if(x>=0 && x<n && y>=0 && y<m&& vis[x][y]==0 && v[x][y]=='.'){
+            //cout<<x<<y<<endl;
+            vis[x][y]=1;
+            dfs(x,y,v);
         }
     }
 }
-
-
-
 int solve(){
+    cin>>n>>m;
+    vector<string> v;
+    //int c=0;
+    mem0(vis);
+
+    for(int i=0;i<n;i++){
+        string s;
+        cin>>s;
+        v.pb(s);
+    }
+    int c=0;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(vis[i][j]==0 && v[i][j]=='.'){
+                vis[i][j]=1;
+                c++;
+                dfs(i,j,v);
+            }
+        }
+    }
+    cout<<c<<endl;
+
     return 0;
 
 }
@@ -164,7 +163,7 @@ signed main()
     #endif
     
     minato;
-    w(t)
+    //w(t)
     solve();
 
 
