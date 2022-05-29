@@ -75,7 +75,7 @@
 #define precision(x) cout << fixed << setprecision(x);
 #define gcd(a,b)    __gcd((a),(b))
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
-//#define endl "\n"
+#define endl "\n"
 #define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
@@ -131,12 +131,12 @@ return h;
 int solve(){
     string s1;
     cin>>s1;
-    string s="";
+    string s="#";
     for(int i=0;i<s1.size();i++){
         s+=s1[i];
         s+='#';
     }
-    s.pop_back();
+    //s.pop_back();
     string t=s;
 
     int n=s.size();
@@ -152,13 +152,15 @@ int solve(){
     int j=-1;
     //cout<<s<<sp<<t<<endl;
     //debug(s);
+    string temp;
+    int pnt2=0;
     for(int i=0;i<n;i++){
 
         int l=0,r=n;
         while(l+1<r){
             int m=(l+r)/2;
             int j=i+m-1;
-            if(i-m+1<0 || i+m-1>=n){
+            if(i-m+1<0 || n-j-1<0){
                 r=m;
                 continue;
             }
@@ -185,10 +187,16 @@ int solve(){
         }
     
         //cout<<l<<endl;
-        if(l>mx){
+        int pnt=2*l-1;
+        
+        if(s[i-l+1]=='#')pnt=(l-1);
+        else pnt=(l);
+        if(pnt>pnt2){
+            pnt2=pnt;
             mx=l;
             px=i;
         }
+     
         
     }
     string k1=s.substr(px-mx+1,mx);
