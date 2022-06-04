@@ -178,6 +178,7 @@ vector<int> kmp(string &s){
     }
     return p;
 }
+vector<int> pk;
 int dp[1005][101];
 int done[1005][101];
 ll state(int i,string &k,int n,int c,string &s){
@@ -211,8 +212,24 @@ ll state(int i,string &k,int n,int c,string &s){
         //debug(k);
         string s1=s+'#'+k;
         //debug(s1);
-        vector<int> p=kmp(s1);
-        int maxa=p.back();
+        int t=c;
+        while(1){//using kmp here
+        if(s[t]==c1){
+            t++;
+            break;
+
+
+        }
+        else if(t){
+            t=pk[t-1];
+
+        }
+        else{
+            break;
+        }
+        }
+        
+        int maxa=t;
         
         //if(k[0]=='A')
         //cout<<maxa<<endl;
@@ -234,6 +251,7 @@ int solve(){
     cin>>n;
     string s;
     cin>>s;
+    pk=kmp(s);
     mem0(done);
     string ans="";
     cout<<state(0,ans,n,0,s)<<endl;;
