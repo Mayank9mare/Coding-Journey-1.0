@@ -164,6 +164,9 @@ vector<int> lcp_array(const T &s) {
     return lcp;
 }
 int solve(){
+    string s="banana";
+    vector<int> v=suffix_array(s);
+    debug(v);
     return 0;
 
 }
@@ -176,7 +179,7 @@ signed main()
     #endif
     
     minato;
-    w(t)
+    //w(t)
     solve();
 
 
