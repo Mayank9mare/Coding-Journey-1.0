@@ -161,12 +161,14 @@ vector<int> lcp_array(const T &s) {
                 --h;
         }
     }
-    return lcp;
+    return lcp;//lcp(i,i+1)
 }
 int solve(){
     string s="banana";
     vector<int> v=suffix_array(s);
     debug(v);
+    vector<int> lcp=lcp_array(s);
+    debug(lcp);
     return 0;
 
 }
