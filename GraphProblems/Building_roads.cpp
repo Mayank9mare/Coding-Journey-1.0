@@ -78,7 +78,6 @@
 //#define endl "\n"
 //#define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
-
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
 
@@ -113,59 +112,42 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-string string1="DRLU";
-int vis[1001][1001];
-int n,m;
-int dfs(int i,int j,vector<string> &v,string &ans,int x2,int y2){
-    if(i==x2 && j==y2)return 1;
-    for(int k=0;k<4;k++){
-        int x=i+dx[k];
-        int y=j+dy[k];
-        if(x>=0 && x<n && y>=0 && y<m && vis[x][y]==0 && v[x][y]!='#'){
-            vis[x][y]=1;
-            ans+=string1[k];
-            
-            if(dfs(x,y,v,ans,x2,y2)){
-                return 1;
-            }
-            ans.pop_back();
+vector<vector<int>> adj;
+vector<int> vis;
+void dfs(int i){
+    vis[i]=1;
+    for(int x:adj[i]){
+        if(vis[x]==0){
+            dfs(x);
+        }
+    }
 
-        }
-    }
-    return 0;
-     
 }
+
 int solve(){
+    int n,m;
     cin>>n>>m;
-    vector<string> v;
-    //int c=0;
-    mem0(vis);
-  int x1,y1;
-  int x2,y2;
+    adj.resize(n);
+    vis.resize(n);
+    for(int i=0;i<m;i++){
+        int x,y;
+        cin>>x>>y;
+        x--;y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    vector<int> v;
     for(int i=0;i<n;i++){
-        string s;
-        cin>>s;
-        for(int j=0;j<m;j++){
-            if(s[j]=='A'){
-                x1=i;
-                y1=j;
-            }
-            if(s[j]=='B'){
-                x2=i;
-                y2=j;
-            }
+        if(vis[i]==0){
+            v.pb(i);
+            dfs(i);
         }
-        v.pb(s);
     }
-    string ans="";
-    if(dfs(x1,y1,v,ans,x2,y2)){
-        cout<<"YES"<<endl;
-        cout<<ans.size()<<endl;
-        cout<<ans<<endl;
+    cout<<v.size()-1<<endl;
+    for(int i=0;i<v.size()-1;i++){
+        cout<<v[i]+1<<sp<<v[i+1]+1<<endl;
     }
-    else{
-        cout<<"NO"<<endl;
-    }
+
     return 0;
 
 }
