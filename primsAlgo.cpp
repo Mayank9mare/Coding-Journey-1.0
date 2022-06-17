@@ -112,50 +112,33 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-const int INF = 1000000000;
+vector<vector<int>> adj;
+vector<int> vis;
 
-struct Edge {
-    int w = INF, to = -1;
-    bool operator<(Edge const& other) const {
-        return make_pair(w, to) < make_pair(other.w, other.to);
-    }
-};
-
-int n;
-vector<vector<Edge>> adj;
-
-void prim() {
-    int total_weight = 0;
-    vector<Edge> min_e(n);
-    min_e[0].w = 0;
-    set<Edge> q;
-    q.insert({0, 0});
-    vector<bool> selected(n, false);
-    for (int i = 0; i < n; ++i) {
-        if (q.empty()) {
-            cout << "No MST!" << endl;
-            exit(0);
-        }
-
-        int v = q.begin()->to;
-        selected[v] = true;
-        total_weight += q.begin()->w;
-        q.erase(q.begin());
-
-        if (min_e[v].to != -1)
-            cout << v << " " << min_e[v].to << endl;
-
-        for (Edge e : adj[v]) {
-            if (!selected[e.to] && e.w < min_e[e.to].w) {
-                q.erase({min_e[e.to].w, e.to});
-                min_e[e.to] = {e.w, v};
-                q.insert({e.w, e.to});
+ll prim(int x){
+    priority_queue<pll,vector<pll>,greater<pll>> pq;
+    ll cost=0;
+    pq.push_back({0,x});
+    while(pq.size()){
+        int c=pq.top().first;
+        int u=pq.top().second;
+        pq.pop();
+        if(vis[u]==1)continue;
+        vis[u]=1;
+        cost+=c;
+        for(auto x:adj[u]){
+            int l=x.second;
+            int nxt=x.first;
+            if(vis[nxt]==0){
+                pq.push({l,nxt});
             }
         }
-    }
 
-    cout << total_weight << endl;
+
+    }
+    return cost;
 }
+
 int solve(){
     return 0;
 
