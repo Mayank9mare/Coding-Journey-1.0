@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="Briefcase" width="80" height="80" viewBox="0 0 80 80">
+    <defs>
+        <clipPath id="clip-path">
+            <rect id="Rectangle_6573" width="60" height="45" class="cls-1" rx="8" transform="translate(10.002 22.5)"/>
+        </clipPath>
+        <style>
+            .cls-1{fill:#007c6e}
+        </style>
+    </defs>
+    <path id="Rectangle_6571" fill="none" d="M0 0H80V80H0z"/>
+    <rect id="Rectangle_6572" width="60" height="45" class="cls-1" rx="8" transform="translate(10.002 22.5)"/>
+    <path id="Path_17342" fill="none" stroke="#007c6e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2px" d="M113 50v-5a5 5 0 0 0-5-5H93a5 5 0 0 0-5 5v5" transform="translate(-60.5 -27.5)"/>
+    <g id="Mask_Group_574" clip-path="url(#clip-path)">
+        <path id="Path_17345" fill="#00473f" d="M10 38.845s15.963 6.179 32.088 6.976S73.7 38.845 73.7 38.845V29.61s-.318-7.176-8.309-7.11-47.666 0-47.666 0-7.756.6-7.725 6.976 0 9.369 0 9.369z" transform="rotate(-5 87.91 47.094)"/>
+    </g>
+    <path id="Path_17346" fill="#13a899" stroke="#13a899" stroke-width="3px" d="M10 38.9s15.048 6.2 30.248 7 29.8-7 29.8-7v-9.266s-.3-7.2-7.833-7.134-44.934 0-44.934 0-7.312.6-7.281 7 0 9.4 0 9.4z"/>
+    <path id="Line_265" fill="none" stroke="#a8f5ec" stroke-linecap="round" stroke-linejoin="round" stroke-width="2px" d="M0 0L7.5 0" transform="translate(36.25 37.5)"/>
+</svg>
