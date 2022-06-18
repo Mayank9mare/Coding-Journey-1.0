@@ -29,4 +29,4 @@ public:
 
 int main() {
 	TA ta1(30);
-}
+}
