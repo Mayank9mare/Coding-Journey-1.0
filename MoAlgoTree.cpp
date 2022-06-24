@@ -1,250 +1,371 @@
+//                           ,;;;;;;,
+//                                 ,;;;'""`;;\
+//                               ,;;;/  .'`',;\
+//                             ,;;;;/   |    \|_
+//                            /;;;;;    \    / .\
+//                          ,;;;;;;|     '.  \/_/
+//                         /;;;;;;;|       \
+//              _,.---._  /;;;;;;;;|        ;   _.---.,_
+//            .;;/      `.;;;;;;;;;|         ;'      \;;,
+//          .;;;/         `;;;;;;;;;.._    .'         \;;;.
+//         /;;;;|          _;-"`       `"-;_          |;;;;\
+//        |;;;;;|.---.   .'  __.-"```"-.__  '.   .---.|;;;;;|
+//        |;;;;;|     `\/  .'/__\     /__\'.  \/`     |;;;;;|
+//        |;;;;;|       |_/ //  \   //  \ \_|       |;;;;;|
+//        |;;;;;|       |/ |/    || ||    \| \|       |;;;;;|
+//         \;;;;|    __ || _  .-.\| |/.-.  _ || __    |;;;;/
+//          \jgs|   / _\|/ = /_o_\   /_o_\ = \|/_ \   |;;;/
+//           \;;/   |`.-     `   `   `   `     -.`|   \;;/
+//          _|;'    \ |    _     _   _     _    | /    ';|_
+//         / .\      \_  ( '--'(     )'--' )  _//      /. \
+//         \/_/       \_/|  /_   |   |   _\  |\_/       \_\/
+//                       | /|\  \   /  //|\ |
+//                       |  | \'._'-'_.'/ |  |
+//                       |  ;  '-.```.-'  ;  |
+//                       |   \    ```    /   |
+//     __                ;    '.-"""""-.'    ;                __
+//    /\ \_         __..--\     `-----'     /--..__         _/ /\
+//    \_'/\`''---''`..;;;;.'.__,       ,__.',;;;;..`''---''`/\'_/
+//         '-.__'';;;;;;;;;;;,,'._   _.',,;;;;;;;;;;;''__.-'
+//              ``''--; ;;;;;;;;..`"`..;;;;;;;; ;--''``   _
+//         .-.       /,;;;;;;;';;;;;;;;;';;;;;;;,\    _.-' `\
+//       .'  /_     /,;;;;;;'/| ;;;;;;; |\';;;;;;,\  `\     '-'|
+//      /      )   /,;;;;;',' | ;;;;;;; | ',';;;;;,\   \   .'-./
+//      `'-..-'   /,;;;;','   | ;;;;;;; |   ',';;;;,\   `"`
+//               | ;;;','     | ;;;;;;; |  ,  ', ;;;'|
+//              _\__.-'  .-.  ; ;;;;;;; ;  |'-. '-.__/_
+//             / .\     (   )  \';;;;;'/   |   |    /. \
+//             \/_/   (`     `) \';;;'/    '-._|    \_\/
+//                     '-/ \-'   '._.'         `
+//                       """      /.`\
+//                                \|_/
+
+
 #include<bits/stdc++.h>
+#define pb push_back
+#define mk make_pair
+#define ll long long
+#define ss second
+#define ff first
+#define pll pair<ll,ll>
+#define vll vector<ll>
+#define mll map<ll,ll>
+//#define mod 1000000007
+#define sp " "
+#define w(x) ll x; cin>>x; while(x--)
+#define ps(x,y) fixed<<setprecision(y)<<x;
+#define fo(i, j, k, in) for (ll i=j ; i<k ; i+=in)
+#define re(i, j) fo(i, 0, j, 1)
+#define pi 3.1415926535897932384626433832795
+#define all(cont) cont.begin(), cont.end()
+#define countbit(x) __builtin_popcount(x)
+#define mod 1000000007//998244353
+#define lo lower_bound
+#define de(n) ll n;cin>>n;
+#define def(a,n) ll n;cin>>n;ll a[n];re(i,n){cin>>a[i];}
+#define defi(a,n,k) ll n;cin>>n; ll k;cin>>k;ll a[n];re(i,n){cin>>a[i];}
+#define deb(x) cout<<#x<<"="<<x<<endl;
+#define tr(it,a) for(auto it=a.begin();it!=a.end();it++)
+#define nl cout<<endl;
+#define minato ios_base::sync_with_stdio(false), cin.tie(nullptr)
+#define mem1(a)           memset(a,-1,sizeof(a))
+#define mem0(a)           memset(a,0,sizeof(a))
+#define ppc               __builtin_popcount
+#define ppcll             __builtin_popcountll
+#define precision(x) cout << fixed << setprecision(x);
+#define gcd(a,b)    __gcd((a),(b))
+#define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
+//#define endl "\n"
+//#define int long long
+const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
+const int x_dir[]={-1,-1,-1,0,0,1,1,1};
+const int y_dir[]={-1,0,1,-1,1,-1,0,1};
+
+
 using namespace std;
+typedef unsigned long long ull;
+typedef long double lld;
+// typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
 
-static const int N = 300005, B = 550;
-static int n, q, a[N], st[N], en[N], v[2*N], pt, par[N][20], hgt[N], ans[N];
-static vector<int> ad[N];
-static tuple<int, int, int, int, int, int> b[N];
+#ifndef KNIGHTMARE
+#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
+#else
+#define debug(x)
+#endif
 
-bool xd(tuple<int, int, int, int, int, int> &x, tuple<int, int, int, int, int, int> &y)
-{
-    if(get<0>(x)/B != get<0>(y)/B) return get<0>(x) < get<0>(y);
-    return get<1>(x) < get<1>(y);
+//void _print(ll t) {cerr << t;}
+void _print(int t) {cerr << t;}
+void _print(string t) {cerr << t;}
+void _print(char t) {cerr << t;}
+void _print(lld t) {cerr << t;}
+void _print(double t) {cerr << t;}
+void _print(ull t) {cerr << t;}
+
+template <class T, class V> void _print(pair <T, V> p);
+template <class T> void _print(vector <T> v);
+template <class T> void _print(set <T> v);
+template <class T, class V> void _print(map <T, V> v);
+template <class T> void _print(multiset <T> v);
+template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.ff); cerr << ","; _print(p.ss); cerr << "}";}
+template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
+//KnightMareVoid
+vector<vector<int>> adj;
+vector<int> euler;
+vector<int> a;
+vector<int> start;
+vector<int> last;
+vector<vector<int>> tab;
+vector<int> tin;
+vector<int> tout;
+const int lz=30;
+int t=0;
+void dfs(int s,int p){
+    //cout<<s<<sp<<p<<endl;
+    tin[s]=t++;
+    tab[s][0]=p;
+    start[s]=euler.size();
+    euler.pb(a[s]);
+    for(int j=1;j<lz;j++){
+        tab[s][j]=tab[tab[s][j-1]][j-1];
+    }
+    for(int x:adj[s]){
+        if(x==p)continue;
+        dfs(x,s);
+    }
+    last[s]=euler.size();
+    euler.pb(a[s]);
+    tout[s]=t++;
 }
-
-void dfs(int x, int y)
-{
-    if(y!=-1)
-    {
-        par[x][0] = y;
-        hgt[x] = hgt[y] + 1;
-    }
-    else
-    {
-        par[x][0] = x;
-        hgt[x] = 0;
-    }
-
-    for(int j=1; j<20; j++)
-    {
-        par[x][j] = par[par[x][j-1]][j-1];
-    }
-
-    v[pt]=a[x];
-    st[x]=pt;
-    pt++;
-
-    for(auto it : ad[x])
-    {
-        if(it!=y)
-        {
-            dfs(it,x);
-        }
-    }
-
-    v[pt]=a[x];
-    en[x]=pt;
-    pt++;
-
-    return;
+bool is_ancestor(int x,int y){
+    return (tin[x]<=tin[y] && tout[x]>=tout[y]);
 }
+// int lca(int x,int y){
+//     if(ancestor(x,y)){
+//         return x;
+//     }
+//     if(ancestor(y,x)){
+//         return y;
+//     }
+//     for(int i=lz-1;i>=0;i--){
+//         if(!ancestor(tab[x][i],y)){
+//             cout<<x<<sp<<y<<endl;
+//             x=tab[x][i];
+//         }
+//     }
+//     return tab[x][0];
 
-int main()
+// }
+
+int lca(int u, int v)
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+    if (is_ancestor(u, v))
+        return u;
+    if (is_ancestor(v, u))
+        return v;
+    for (int i = lz-1; i >= 0; --i) {
+        if (!is_ancestor(tab[u][i], v))
+            u = tab[u][i];
+    }
+    return tab[u][0];
+}
+map<int,int> mp;
+set<int> st;
+void add(int x){
+    mp[x]++;
+    mp[x]%=2;
+    if(mp[x]==1){
+        st.insert(x);
+    }
+}
+void remove(int x){
+    if(mp[x]==1){
+        mp[x]--;
+        //if(st.find(x)!=st.end())
+        st.erase(st.find(x));
+    }
+    else{
+        mp[x]=1;
+        st.insert(x);
+    }
+}
+int find(int lp,int rp){
+    if(st.size()==0){
+        return -1;
+    }
+    auto x=st.lower_bound(lp);
+    if(x==st.end()){
+        return -1;
+    }
+    int p=*x;
+    if(lp<=p && p<=rp){
+        return p;
+    }
+    return -1;
 
+    
+}
+int cmp(array<int,7> a,array<int,7> b){
+    if(a[2]==b[2]){
+        return a[1]<b[1];
+    }
+    else{
+        return a[2]<b[2];
+    }
+}
+int solve(){
+    t=0;
+    int n,q;
     cin>>n>>q;
-
-    for(int i=0; i<n; i++)
-    {
+    adj.assign(n,vector<int>(0));
+    a.assign(n,0);
+    tab.assign(n,vector<int>(lz,0));
+    tin.assign(n,0);
+    tout.assign(n,0);
+    for(int i=0;i<n;i++){
         cin>>a[i];
-        a[i]--;
     }
-
-    for(int i=0; i<n-1; i++)
-    {
-        int t1, t2;
-        cin>>t1>>t2;
-        t1--;t2--;
-
-        ad[t1].push_back(t2);
-        ad[t2].push_back(t1);
+    for(int i=0;i<n-1;i++){
+        int x,y;
+        cin>>x>>y;
+        x--;y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
     }
+start.assign(n,0);
+last.assign(n,0);
+dfs(0,0);
+//cout<<lca(4,5)<<endl;
+//cout<<tab[4][1]<<endl;
+int b_size=log(euler.size())+1;
 
-    dfs(0,-1);
+//debug(euler);
+vector<array<int,7>> qry(q);
+for(int i=0;i<q;i++){
+    int l,r,u,v;
+    cin>>u>>v>>l>>r;
+    u--;
+    v--;
+   // cout<<tab[2][0]<<endl;
+    int lc=lca(u,v);
+   //debug(lc);
+    if(lc==v){
+        qry[i][0]=start[v];
+        qry[i][1]=start[u];
+        qry[i][2]=(start[v])/b_size;
+        qry[i][3]=-1;
+        qry[i][4]=i;
+        qry[i][5]=l;
+        qry[i][6]=r;
 
-    for(int i=0; i<q; i++)
-    {
-        int t1,t2;
-        cin>>t1>>t2;
-        t1--;t2--;
 
-        int l = t1;
-        int r = t2;
-
-        for(int j=19; j>=0; j--)
-        {
-            if(hgt[l]+(1<<j)<=hgt[r])
-            {
-                r = par[r][j];
-            }
-            if(hgt[r]+(1<<j)<=hgt[l])
-            {
-                l = par[l][j];
-            }
-        }
-
-        if(l==r)
-        {
-            if(t1 == l)
-            {
-                get<0>(b[i]) = st[t1];
-                get<1>(b[i]) = st[t2]+1;
-            }
-            else
-            {
-                get<0>(b[i]) = st[t2];
-                get<1>(b[i]) = st[t1]+1;
-            }
-            get<2>(b[i]) = -1;
-        }
-        else
-        {
-            for(int j=19; j>=0; j--)
-            {
-                if(par[l][j] != par[r][j])
-                {
-                    l = par[l][j];
-                    r = par[r][j];
-                }
-            }
-
-            if(en[t1]<st[t2])
-            {
-                get<0>(b[i]) = en[t1];
-                get<1>(b[i]) = st[t2]+1;
-            }
-            else
-            {
-                get<0>(b[i]) = en[t2];
-                get<1>(b[i]) = st[t1]+1;
-            }
-            get<2>(b[i]) = a[par[l][0]];
-        }
-
-        cin>>get<3>(b[i])>>get<4>(b[i]);
-        get<3>(b[i])--;
-        get<4>(b[i])--;
-        get<5>(b[i]) = i;
     }
+    else if(lc==u){
+        qry[i][0]=start[u];
+        qry[i][1]=start[v];
+        qry[i][2]=(start[u])/b_size;
+        qry[i][3]=-1;
+        qry[i][4]=i;
+        qry[i][5]=l;
+        qry[i][6]=r;
 
-    sort(b, b+q, xd);
-
-    int l=0,r=0;
-    unsigned long long mp[(n+63)/64]={};
-
-    for(int i=0; i<q; i++)
-    {
-        int tl = get<0>(b[i]);
-        int tr = get<1>(b[i]);
-        int lca = get<2>(b[i]);
-
-        while(l<tl)
-        {
-            mp[v[l]>>6]^=(1LL<<(v[l]&((1<<6)-1)));
-            l++;
-        }
-        while(l>tl)
-        {
-            l--;
-            mp[v[l]>>6]^=(1LL<<(v[l]&((1<<6)-1)));
-        }
-        while(r<tr)
-        {
-            mp[v[r]>>6]^=(1LL<<(v[r]&((1<<6)-1)));
-            r++;
-        }
-        while(r>tr)
-        {
-            r--;
-            mp[v[r]>>6]^=(1LL<<(v[r]&((1<<6)-1)));
-        }
-
-        if(lca!=-1)
-        {
-            mp[lca>>6]^=(1LL<<(lca&((1<<6)-1)));
-        }
-
-        tl = get<3>(b[i]);
-        tr = get<4>(b[i]);
-
-        int pt = -2;
-
-        if((tl>>6)==(tr>>6))
-        {
-            for(int j=tl; j<=tr; j++)
-            {
-                if((mp[j>>6]&(1LL<<(j&((1<<6)-1))))!=0)
-                {
-                    pt = j;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            while((tl>>6)==((tl-1)>>6))
-            {
-                if((mp[tl>>6]&(1LL<<(tl&((1<<6)-1))))!=0)
-                {
-                    pt = tl;
-                    break;
-                }
-                tl++;
-            }
-
-            if(pt==-2)
-            {
-
-                while((tr>>6)==((tr+1)>>6))
-                {
-                    if((mp[tr>>6]&(1LL<<(tr&((1<<6)-1))))!=0)
-                    {
-                        pt = tr;
-                        break;
-                    }
-                    tr--;
-                }
-
-                if(pt==-2)
-                {
-
-                    for(int j=(tl>>6); j<=(tr>>6); j++)
-                    {
-                        if(mp[j]!=0)
-                        {
-                            pt = __builtin_ctzll(mp[j])+(j<<6);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        ans[get<5>(b[i])] = pt+1;
-
-        if(lca!=-1)
-        {
-            mp[lca>>6]^=(1LL<<(lca&((1<<6)-1)));
-        }
     }
+    else{
+        if(last[v]<start[u]){
+            qry[i][0]=last[v];
+            qry[i][1]=start[u];
+            qry[i][2]=(last[v])/b_size;
+            qry[i][3]=lc;
 
-    for(int i=0; i<q; i++)
-    {
-        cout<<ans[i]<<'\n';
+
+        }
+        else{
+            qry[i][0]=last[u];
+            qry[i][1]=start[v];
+            qry[i][2]=(last[u])/b_size;
+            qry[i][3]=lc;
+
+        }
+        qry[i][4]=i;
+        qry[i][5]=l;
+        qry[i][6]=r;
+
+       
+    
+
     }
+   
+
+
+}
+ sort(all(qry),cmp);
+   // debug(qry);
+    // for(auto x:qry){
+    //     cout<<"l= "<<x[0]<<sp;
+    //     cout<<"r= "<<x[1]<<sp;
+    //     cout<<"bno= "<<x[2]<<sp;
+    //     cout<<"lc= "<<x[3]<<sp;
+    //     cout<<"i= "<<x[4]<<sp;
+    //     nl;
+    // }
+int l=0,r=0;
+add(euler[0]);
+vector<int> ans(q);
+for(auto x:qry){
+    int curL=x[0];
+    int curR=x[1];
+    int i=x[4];
+    int lc=x[3];
+    int lp=x[5];
+    int rp=x[6];
+    while(curL<l){
+        l--;
+        add(euler[l]);
+    }
+    while(curR>r){
+        r++;
+        add(euler[r]);
+    }
+    while(curL>l){
+        remove(euler[l]);
+        l++;
+    }
+    while(curR<r){
+        remove(euler[r]);
+        r--;
+
+    }
+    if(lc!=-1){
+        add(a[lc]);
+    }
+    ans[i]=find(lp,rp);
+
+}
+for(auto x:ans){
+    cout<<x<<sp;
+
+}
+nl;
+// debug(start);
+// debug(last);
+
+    return 0;
+
+}
+
+
+signed main()
+{
+    #ifndef KNIGHTMARE
+    freopen("Error.txt", "w", stderr);
+    #endif
+    
+    minato;
+    //w(t)
+    solve();
+
 
     return 0;
 }
