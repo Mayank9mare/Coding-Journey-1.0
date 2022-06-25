@@ -112,6 +112,87 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
+const int MAXN=3e5+5;
+pll tree[4*MAXN];
+int A[MAXN];
+
+void build(int node, int start, int end)
+{
+    if(start == end)
+    {
+        // Leaf node will have a single element
+        tree[node] = {A[start],start};
+    }
+    else
+    {
+        int mid = (start + end) / 2;
+        // Recurse on the left child
+        build(2*node, start, mid);
+        // Recurse on the right child
+        build(2*node+1, mid+1, end);
+        // Internal node will have the sum of both of its children
+        if(tree[2*node].first>tree[2*node+1].first){
+            tree[node]=tree[2*node];
+        }
+        else{
+            tree[node]=tree[2*node +1];
+        }
+    }
+}
+
+void update(int node, int start, int end, int idx, int val)
+{
+    if(start == end)
+    {
+        // Leaf node
+        A[idx] = val;
+
+        tree[node] = {val,idx};
+    }
+    else
+    {
+        int mid = (start + end) / 2;
+        if(start <= idx and idx <= mid)
+        {
+            // If idx is in the left child, recurse on the left child
+            update(2*node, start, mid, idx, val);
+        }
+        else
+        {
+            // if idx is in the right child, recurse on the right child
+            update(2*node+1, mid+1, end, idx, val);
+        }
+        // Internal node will have the sum of both of its children
+        if(tree[2*node].first>tree[2*node+1].first){
+            tree[node]=tree[2*node];
+        }
+        else{
+            tree[node]=tree[2*node +1];
+        }
+    }
+}
+
+pll query(int node, int start, int end, int l, int r)
+{
+    if(r < start or end < l)
+    {
+        // range represented by a node is completely outside the given range
+        return {0,0};
+    }
+    if(l <= start and end <= r)
+    {
+        // range represented by a node is completely inside the given range
+        return tree[node];
+    }
+    // range represented by a node is partially inside and partially outside the given range
+    int mid = (start + end) / 2;
+    pll p1 = query(2*node, start, mid, l, r);
+    pll p2 = query(2*node+1, mid+1, end, l, r);
+    return (p1.first>p2.first)?p1:p2;
+}
+
+
+int B=550;
 vector<vector<int>> adj;
 vector<int> euler;
 vector<int> a;
@@ -120,7 +201,7 @@ vector<int> last;
 vector<vector<int>> tab;
 vector<int> tin;
 vector<int> tout;
-const int lz=30;
+const int lz=20;
 int t=0;
 void dfs(int s,int p){
     //cout<<s<<sp<<p<<endl;
@@ -171,39 +252,27 @@ int lca(int u, int v)
     }
     return tab[u][0];
 }
-map<int,int> mp;
-set<int> st;
+
 void add(int x){
-    mp[x]++;
-    mp[x]%=2;
-    if(mp[x]==1){
-        st.insert(x);
-    }
+    A[x]^=1;
+    update(1,0,MAXN-1,x,A[x]);
+    // if(mp[x]==1){
+    //     //st.insert(x);
+    // }
+    // else{
+    //     //st.erase(st.find(x));
+    // }
 }
 void remove(int x){
-    if(mp[x]==1){
-        mp[x]--;
-        //if(st.find(x)!=st.end())
-        st.erase(st.find(x));
-    }
-    else{
-        mp[x]=1;
-        st.insert(x);
-    }
+   A[x]^=1;
+    update(1,0,MAXN-1,x,A[x]);
 }
 int find(int lp,int rp){
-    if(st.size()==0){
-        return -1;
-    }
-    auto x=st.lower_bound(lp);
-    if(x==st.end()){
-        return -1;
-    }
-    int p=*x;
-    if(lp<=p && p<=rp){
-        return p;
-    }
-    return -1;
+   pll p=query(1,0,MAXN-1,lp,rp);
+   if(p.first==1){
+    return p.second;
+   }
+   return -1;
 
     
 }
@@ -216,6 +285,7 @@ int cmp(array<int,7> a,array<int,7> b){
     }
 }
 int solve(){
+    //mem0(mp);
     t=0;
     int n,q;
     cin>>n>>q;
@@ -254,7 +324,7 @@ for(int i=0;i<q;i++){
     if(lc==v){
         qry[i][0]=start[v];
         qry[i][1]=start[u];
-        qry[i][2]=(start[v])/b_size;
+        qry[i][2]=(start[v])/B;
         qry[i][3]=-1;
         qry[i][4]=i;
         qry[i][5]=l;
@@ -265,7 +335,7 @@ for(int i=0;i<q;i++){
     else if(lc==u){
         qry[i][0]=start[u];
         qry[i][1]=start[v];
-        qry[i][2]=(start[u])/b_size;
+        qry[i][2]=(start[u])/B;
         qry[i][3]=-1;
         qry[i][4]=i;
         qry[i][5]=l;
@@ -276,7 +346,7 @@ for(int i=0;i<q;i++){
         if(last[v]<start[u]){
             qry[i][0]=last[v];
             qry[i][1]=start[u];
-            qry[i][2]=(last[v])/b_size;
+            qry[i][2]=(last[v])/B;
             qry[i][3]=lc;
 
 
@@ -284,7 +354,7 @@ for(int i=0;i<q;i++){
         else{
             qry[i][0]=last[u];
             qry[i][1]=start[v];
-            qry[i][2]=(last[u])/b_size;
+            qry[i][2]=(last[u])/B;
             qry[i][3]=lc;
 
         }
@@ -341,10 +411,13 @@ for(auto x:qry){
         add(a[lc]);
     }
     ans[i]=find(lp,rp);
+    if(lc!=-1){
+        remove(a[lc]);
+    }
 
 }
 for(auto x:ans){
-    cout<<x<<sp;
+    cout<<x<<endl;
 
 }
 nl;
