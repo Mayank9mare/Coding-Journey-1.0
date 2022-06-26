@@ -75,9 +75,8 @@
 #define precision(x) cout << fixed << setprecision(x);
 #define gcd(a,b)    __gcd((a),(b))
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
-//#define endl "\n"
-//#define int long long
-#define f(x) (x)*(x)
+#define endl "\n"
+#define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
@@ -113,11 +112,119 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
+int n; // number of nodes
+vector<vector<int>> adj; // adjacency list of graph
 
+vector<bool> visited;
+vector<int> tin, low;
+int timer;
+vector<int> sub;
+vector<pll> v1;
+map<pll,int> mp;
+int ans=0;
+void dfs(int v, int p = -1) {
+    visited[v] = true;
+    tin[v] = low[v] = timer++;
+    sub[v]=1;
+    for (int to : adj[v]) {
+        if (to == p) continue;
+        if (visited[to]) {
+            low[v] = min(low[v], tin[to]);
+        } else {
+            dfs(to, v);
+            //sub[v]+=sub[to];
+            low[v] = min(low[v], low[to]);
+            if (low[to] > tin[v]){
+                //nl;
+                //cout<<to<<sp<<v<<endl;
+                v1.pb({to,v});
+                mp[{to,v}]=1;
+                mp[{v,to}]=1;
+
+
+                ans+=sub[to];
+                //cout<<ans<<endl;
+                
+
+
+            }
+            else{
+                sub[v]+=sub[to];
+            }
+        }
+    }
+    
+}
+
+void find_bridges() {
+    timer = 0;
+    visited.assign(n, false);
+    tin.assign(n, -1);
+    low.assign(n, -1);
+    sub.assign(n,0);
+    for (int i = 0; i < n; ++i) {
+        if (!visited[i])
+            dfs(i);
+    }
+}
+//vector<vector<int>> adj;
+
+
+void dfs3(int v,vector<int> &v2){
+    //c++;
+    visited[v]=1;
+    v2.pb(v);
+
+    //sub[v]=1;
+    for(int x:adj[v]){
+        if(visited[x]==0){
+            if(mp.find({x,v})==mp.end()){
+                dfs3(x,v2);
+                //sub[v]+=sub[x];
+            }
+
+
+        }
+      
+       
+    }
+
+}
 int solve(){
-    int a=10;
-    int b=f(a+1);
-    cout<<b<<endl;
+    //int n;
+    cin>>n;
+    adj.assign(n,vector<int>(0));
+    int m;
+    cin>>m;
+    for(int i=0;i<m;i++){
+        int x,y;
+        cin>>x>>y;
+        x--;y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    
+    find_bridges();//O(n+m)
+    ans=0;
+        visited.assign(n,0);
+    for(int i=0;i<n;i++){//O(n)
+        if(visited[i]==0){
+            vector<int> v3;
+            dfs3(i,v3);
+            for(auto x:v3){
+                sub[x]=v3.size();
+            }
+        }
+    }
+    for(auto x:v1){//O(n)
+        int x1=sub[x.first];
+        int y=sub[x.second];
+        ans+=(x1*y);
+        //sub.assign(n,0);
+       
+
+    }
+    cout<<ans<<endl;
     return 0;
 
 }

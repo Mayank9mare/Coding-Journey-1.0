@@ -130,7 +130,7 @@ void dfs(int v,int p=-1){
             dfs(to,v);
             low[v]=min(low[v],low[to]);
             if(low[to]>tin[v]){
-                ///isbridge
+                ///isbridge(to,v)
 
             }
         }

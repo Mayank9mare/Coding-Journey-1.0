@@ -129,9 +129,10 @@ double closest_pair(pll pnts[],int n)
         set<pll> box;
         box.insert(pnts[0]);
         int left = 0;
+        //range [x-h],[y-h,y+h]
         for (int i=1;i<n;++i)
         {
-            while (left<i && pnts[i].px-pnts[left].px > best)
+            while (left<i && pnts[i].px-pnts[left].px > best)//eliminating (x-h) part 
                 box.erase(pnts[left++]);
             for(typeof(box.begin()) it=box.lower_bound(make_pair(pnts[i].py-best, pnts[i].px-best));it!=box.end() && pnts[i].py+best>=it->py;it++)
                 best = min(best, sqrt(pow(pnts[i].py - it->py, 2.0)+pow(pnts[i].px - it->px, 2.0)));
