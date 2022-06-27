@@ -17,7 +17,8 @@ int main() {
         }
     }
     int ans=0;
-    for(int i=0;i<=1;i++){
+    //bell no for n
+    for(int i=0;i<=n;i++){
         ans += s[n][i];
     }
     cout<<ans;
