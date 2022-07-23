@@ -1014,3 +1014,64 @@ int main()
 
 ```
 
+---
+
+## Ways to color a 3xN Board
+
+Given a 3 x A board,  find the number of ways to color it using at most 4 colors such that no 2 adjacent boxes have same color.
+
+Diagonal neighbors are not treated as adjacent boxes.
+
+Return the ways modulo 109 + 7 as the answer grows quickly.
+
+```c
+
+const long long mod=1e9+7;
+int Solution::solve(int A) {
+    vector<vector<int>> v;
+    long long dp[A+1][4][4][4];
+    for(int i=0;i<=A;i++){
+        for(int i1=0;i1<=3;i1++){
+            for(int i2=0;i2<=3;i2++){
+                for(int i3=0;i3<=3;i3++){
+                    dp[i][i1][i2][i3]=0;
+                }
+            }
+
+        }
+    }
+    for(int i=0;i<=3;i++){
+        for(int j=0;j<=3;j++){
+            if(i==j)continue;
+            for(int k=0;k<=3;k++){
+                if(j==k)continue;
+                v.push_back({i,j,k});
+                dp[1][i][j][k]=1;
+
+
+            }
+        }
+    }
+    for(int i=2;i<=A;i++){
+        for(auto &j:v){
+            //dp[i][j[0]][j[1]][j[2]]=0;
+            for(auto &u:v){
+                if(j[0]==u[0] || j[1]==u[1] || j[2]==u[2])continue;
+                dp[i][j[0]][j[1]][j[2]]+=dp[i-1][u[0]][u[1]][u[2]]%mod;
+                dp[i][j[0]][j[1]][j[2]]%=mod;
+
+            }
+        }
+    }
+    long long ans=0;
+    for(auto &x:v){
+        ans+=dp[A][x[0]][x[1]][x[2]]%mod;
+        ans%=mod;
+    }
+    return ans%mod;
+
+   
+}
+
+```
+---
