@@ -1075,3 +1075,45 @@ int Solution::solve(int A) {
 
 ```
 ---
+
+## Best Time to Buy and Sell Stock atmost B times
+
+Given an array of integers A of size N in which ith element is the price of the stock on day i.
+
+You can complete atmost B transactions.
+
+Find the maximum profit you can achieve
+
+```c
+
+int Solution::solve(vector<int> &A, int B) {
+    int n=A.size();
+    B=min(B,n-1);
+    int dp[n+1][n+1];// max cost selling stock i
+    for(int i=0;i<=n;i++){
+        dp[0][i]=0;
+        dp[i][0]=0;
+    }
+    int aux[n+1];
+    for(int i=0;i<=n;i++){
+        aux[i]=INT_MIN;
+    }
+    aux[0]=-A[0];
+    for(int i=1;i<n;i++){
+
+        for(int j=1;j<=B;j++){
+            dp[i][j]=dp[i-1][j];
+            dp[i][j]=max(dp[i][j],aux[j-1]+A[i]);
+            // for(int k=0;k<i;k++){
+            //     dp[i][j]=max(dp[i][j],A[i]-A[k]+dp[k][j-1]);
+            // }
+            aux[j]=max(aux[j],dp[i][j]-A[i]);
+            
+        }
+        aux[0]=max(aux[0],-A[i]);
+  
+    }
+    return dp[n-1][B];
+}
+
+```
