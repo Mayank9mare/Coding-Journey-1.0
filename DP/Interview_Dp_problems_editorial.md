@@ -611,3 +611,277 @@ int Solution::numDecodings(string A) {
 }
 
 ```
+---
+
+## Intersecting Chords in a Circle
+
+Given a number A, return number of ways you can draw A chords in a circle with 2 x A points such that no 2 chords intersect.
+
+Two ways are different if there exists a chord which is present in one way and not in other.
+
+Return the answer modulo 109 + 7.
+
+
+
+=> If we draw a chord from a point in S_1 to a point in S_2, it will surely intersect the chord we’ve just drawn.
+
+```c
+
+int Solution::chordCnt(int A) {
+    int mod=1000000007;
+    int n=2*A;
+    long long dp[n+1]={0};
+    dp[0]=1;
+    dp[2]=1;
+    for(int i=4;i<=n;i+=2){
+        for(int j=0;j<i;j+=2){
+            dp[i]+=(dp[j]%mod*dp[i-j-2]%mod)%mod;
+            dp[i]%=mod;
+        }
+    }
+    return dp[n]%mod;
+
+
+}
+
+```
+
+---
+
+## Jump game array(Greedy)
+
+Given an array of non-negative integers, A, you are initially positioned at the 0th index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Determine if you are able to reach the last index.
+
+```c
+
+int Solution::canJump(vector<int> &A) {
+    int n=A.size();
+    if(n==1)return 1;
+    if(A[0]==0)return 0;
+     int c=1;
+     for(int i=n-2;i>=0;i--){
+         if(A[i]>=c){
+             c=1;
+         }
+         else{
+             c++;
+         }
+
+     }
+     if(c==1)return 1;
+     return 0;
+
+
+   
+}
+
+```
+
+---
+
+## Min Jump Array
+
+Given an array of non-negative integers, A, of length N, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Return the minimum number of jumps required to reach the last index.
+
+If it is not possible to reach the last index, return -1.
+
+```c
+
+int Solution::jump(vector<int> &A) {
+    int n=A.size();
+   if(n==1)return 0;
+   if(A[0]==0)return -1;
+   int dp[n];
+   for(int i=0;i<n;i++){
+       dp[i]=100000009;
+   }
+   dp[0]=0;
+   for(int i=0;i<n;i++){
+       if(dp[i]==100000009)continue;
+       for(int j=i+1;j<min(n,i+A[i]+1);j++){
+           dp[j]=min(dp[j],dp[i]+1);
+       }
+   }
+   if(dp[n-1]==100000009)return -1;
+   return dp[n-1];
+
+}
+
+```
+
+---
+
+## Longest Arithmetic Progression
+
+
+Method 1
+
+
+```c
+
+int Solution::solve(const vector<int> &A) {
+    vector<int> B;
+    for(int i=0;i<A.size();i++){
+        B.push_back(A[i]);
+    }
+     int ans = 2;
+    int n = A.size();
+    if (n <= 2)
+        return n;
+ 
+    vector<int> llap(n, 2);
+ 
+    sort(B.begin(), B.end());
+ 
+    for (int j = n - 2; j >= 0; j--)
+    {
+        int i = j - 1;
+        int k = j + 1;
+        while (i >= 0 && k < n)
+        {
+            if (B[i] + B[k] == 2 * B[j])
+            {
+                llap[j] = max(llap[k] + 1, llap[j]);
+                ans = max(ans, llap[j]);
+                i -= 1;
+                k += 1;
+            }
+            else if (B[i] + B[k] < 2 * B[j])
+                k += 1;
+            else
+                i -= 1;
+        }
+    }
+    return ans;
+
+}
+
+```
+
+Method 2
+
+```c
+
+int lenghtOfLongestAP(int set[], int n)
+{
+    if (n <= 2)  return n;
+ 
+    // Create a table and initialize all values as 2. The value of
+    // L[i][j] stores LLAP with set[i] and set[j] as first two
+    // elements of AP. Only valid entries are the entries where j>i
+    int L[n][n];
+    int llap = 2;  // Initialize the result
+ 
+    // Fill entries in last column as 2. There will always be
+    // two elements in AP with last number of set as second
+    // element in AP
+    for (int i = 0; i < n; i++)
+        L[i][n-1] = 2;
+ 
+    // Consider every element as second element of AP
+    for (int j=n-2; j>=1; j--)
+    {
+        // Search for i and k for j
+        int i = j-1, k = j+1;
+        while (i >= 0 && k <= n-1)
+        {
+           if (set[i] + set[k] < 2*set[j])
+               k++;
+ 
+           // Before changing i, set L[i][j] as 2
+           else if (set[i] + set[k] > 2*set[j])
+           {   L[i][j] = 2, i--;   }
+ 
+           else
+           {
+               // Found i and k for j, LLAP with i and j as first two
+               // elements is equal to LLAP with j and k as first two
+               // elements plus 1. L[j][k] must have been filled
+               // before as we run the loop from right side
+               L[i][j] = L[j][k] + 1;
+ 
+               // Update overall LLAP, if needed
+               llap = max(llap, L[i][j]);
+ 
+               // Change i and k to fill more L[i][j] values for
+               // current j
+               i--; k++;
+           }
+        }
+ 
+        // If the loop was stopped due to k becoming more than
+        // n-1, set the remaining entities in column j as 2
+        while (i >= 0)
+        {
+            L[i][j] = 2;
+            i--;
+        }
+    }
+    return llap;
+}
+
+```
+
+---
+
+## Shortest common superstring
+
+Given a set of strings, A of length N.
+
+Return the length of smallest string which has all the strings in the set as substring.
+
+Ans => 
+
+Brute force
+Let’s say we have only two strings say s1 and s2, the possible cases are:
+
+They do not overlap [ans = len(s1) + len(s2) ]
+They overlap partially [ans = len(s1)+len(s2)-len(max. overlapping part)]
+They overlap completely [ans = max(len(s1), len(s2)]
+What we can see here is we can easily combine two strings. In the brute force, we could take all the permutations of numbers [1 .. N], then combine the strings in that order.
+e.g: strings = [s1, s2, s3], order = [2,3,1]
+Steps are: [s1, s2,s3] –> [s2+s3, s1] –> [s1+s2+s3].
+(Here addition of strings is according to the method described above.
+
+I would advice you to completely digest that this will give the optimal solution whatever the case may be. Considering all the permutations is optimal but time consuming.
+
+Dynamic programming
+
+We have dynamic programming to our rescue in this case. You can see that there is a optimal substructure and overlapping subproblems in the brute force algorithm described above. Well if you can’t already see, let me help you out.
+Example:
+Input = [s1, s2, s3, s4]
+Order 1 = [2,3,1,4] , Steps: [s2+s3, s1, s4] –> [s2+s3+s1, s4] –> [s1+s2+s3+s4]
+Order 2 = [1,3,2,4] , Steps: [s1+s3, s2, s4] –> [s1+s2+s3, s4] –> [s1+s2+s3+s4].
+
+Do you see here that Order1 and Order2 both calculated the optimal solution for set of strings [s1, s2, s3]
+(Intermediate string s1+s2+s3 is the optimal solution for this set)
+
+Hurrah! Time to think Dynamically.
+
+Bitmasking in DP
+Well, this kind of DP formulations require a specific technique called Bitmasking. It is not the conventional type and in this case T(N) = CCNN + CN*(2^N) (Still better than O(N!) right).
+
+Formulation:
+dp[i][mask] = Optimal solution for set of strings corresponding to 1’s in the mask where the last added string to our solution is i-th string.
+
+Recurrence:
+dp[i][mask] = min(dp[x][mask ^ (1«i)] where {mask | (1«x) = 1} )
+
+I recommend you reading about the Bitmask in DP if you still have the doubt.
+
+Happy coding.
+
+P.S.: For those feeling excited, you can try finding the string (not the length) once you complete this one.
+
+```c
+
+
+```
