@@ -882,6 +882,135 @@ Happy coding.
 P.S.: For those feeling excited, you can try finding the string (not the length) once you complete this one.
 
 ```c
-
+int funct(string A,string B, string& str)
+{
+    int max=INT_MIN;
+    int len1=A.size(),len2=B.size();
+    for(int i=1;i<=min(len1,len2);i++)
+    {
+        if(A.compare(len1-i,i,B,0,i)==0)
+        {
+            max=i;
+            str=A+B.substr(i);
+        }
+    }
+    for(int i=1;i<=min(len1,len2);i++)
+    {
+        if(A.compare(0,i,B,len2-i,i)==0)
+        {
+            max=i;
+            str=B+A.substr(i);
+        }
+    }
+    return max;
+}
+int Solution::solve(vector<string> &A) {
+    int n=A.size();
+    while(n!=1)
+    {
+        int l,r,maxi=INT_MIN;
+        string resstr;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                string str;
+                int res=funct(A[i],A[j],str);
+                if(maxi<res)
+                {
+                    maxi=res;
+                    resstr=str;
+                    l=i;
+                    r=j;
+                }
+            }
+        }
+        n--;
+        if(maxi==INT_MIN)
+        A[0]+=A[n];
+        else
+        {
+            A[l]=resstr;
+            A[r]=A[n];
+        }
+    }
+    return A[0].size();
+}
 
 ```
+---
+
+## Travelling Salesman Problem
+
+Given a set of cities and the distance between every pair of cities, the problem is to find the shortest possible route that visits every city exactly once and returns to the starting point.
+
+Ans=>
+
+Let the given set of vertices be {1, 2, 3, 4,….n}. Let us consider 1 as starting and ending point of output. For every other vertex I (other than 1), we find the minimum cost path with 1 as the starting point, I as the ending point, and all vertices appearing exactly once. Let the cost of this path cost (i), and the cost of the corresponding Cycle would cost (i) + dist(i, 1) where dist(i, 1) is the distance from I to 1. Finally, we return the minimum of all [cost(i) + dist(i, 1)] values. This looks simple so far. 
+
+Now the question is how to get cost(i)? To calculate the cost(i) using Dynamic Programming, we need to have some recursive relation in terms of sub-problems. 
+
+Let us define a term C(S, i) be the cost of the minimum cost path visiting each vertex in set S exactly once, starting at 1 and ending at i. We start with all subsets of size 2 and calculate C(S, i) for all subsets where S is the subset, then we calculate C(S, i) for all subsets S of size 3 and so on. Note that 1 must be present in every subset.
+
+```c
+
+const int n = 4;
+// give appropriate maximum to avoid overflow
+const int MAX = 1000000;
+  
+// dist[i][j] represents shortest distance to go from i to j
+// this matrix can be calculated for any given graph using
+// all-pair shortest path algorithms
+int dist[n + 1][n + 1] = {
+    { 0, 0, 0, 0, 0 },    { 0, 0, 10, 15, 20 },
+    { 0, 10, 0, 25, 25 }, { 0, 15, 25, 0, 30 },
+    { 0, 20, 25, 30, 0 },
+};
+  
+// memoization for top down recursion
+int memo[n + 1][1 << (n + 1)];
+  
+int fun(int i, int mask)
+{
+    // base case
+    // if only ith bit and 1st bit is set in our mask,
+    // it implies we have visited all other nodes already
+    if (mask == ((1 << i) | 3))
+        return dist[1][i];
+    // memoization
+    if (memo[i][mask] != 0)
+        return memo[i][mask];
+  
+    int res = MAX; // result of this sub-problem
+  
+    // we have to travel all nodes j in mask and end the
+    // path at ith node so for every node j in mask,
+    // recursively calculate cost of travelling all nodes in
+    // mask except i and then travel back from node j to
+    // node i taking the shortest path take the minimum of
+    // all possible j nodes
+  
+    for (int j = 1; j <= n; j++)
+        if ((mask & (1 << j)) && j != i && j != 1)
+            res = std::min(res, fun(j, mask & (~(1 << i)))
+                                    + dist[j][i]);
+    return memo[i][mask] = res;
+}
+// Driver program to test above logic
+int main()
+{
+    int ans = MAX;
+    for (int i = 1; i <= n; i++)
+        // try to go from node 1 visiting all nodes in
+        // between to i then return from i taking the
+        // shortest route to 1
+        ans = std::min(ans, fun(i, (1 << (n + 1)) - 1)
+                                + dist[i][1]);
+  
+    printf("The cost of most efficient tour = %d", ans);
+  
+    return 0;
+}
+
+```
+
