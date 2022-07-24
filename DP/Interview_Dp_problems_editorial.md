@@ -1184,7 +1184,7 @@ for(int i=1;i<=k;i++)
     dp[i][1]=1;//one floor
 }
 
-for(int i=2;i<=k;i++)
+for(int i=2;i<=k;i++)//dp[i][j]
 {
     for(int j=2;j<=n;j++)
     {
