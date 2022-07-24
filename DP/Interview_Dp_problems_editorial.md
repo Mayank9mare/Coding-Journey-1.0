@@ -1117,3 +1117,94 @@ int Solution::solve(vector<int> &A, int B) {
 }
 
 ```
+
+---
+
+## Kth Manhattan Distance Neighbourhood
+
+Given a matrix M of size nxm and an integer K, find the maximum element in the K manhattan distance neighbourhood for all elements in nxm matrix. 
+
+In other words, for every element M[i][j] find the maximum element M[p][q] such that abs(i-p)+abs(j-q) <= K.
+
+Note: Expected time complexity is O(N * N *K)
+
+```c
+
+vector<vector<int> > Solution::solve(int A, vector<vector<int> > &B){
+    vector<vector<int>> dp=B;
+    for(int k=1;k<=A;k++)
+    {
+        vector<vector<int>> h(B.size(),vector<int>(B[0].size()));
+        for(int i=0;i<B.size();i++)
+        {
+            for(int j=0;j<B[0].size();j++)
+            {
+                h[i][j]=dp[i][j];
+                if(i>0)
+                    h[i][j]=max(h[i][j],dp[i-1][j]);
+                if(i<B.size()-1)
+                    h[i][j]=max(h[i][j],dp[i+1][j]);
+                if(j>0)
+                    h[i][j]=max(h[i][j],dp[i][j-1]);
+                if(j<B[0].size()-1)
+                    h[i][j]=max(h[i][j],dp[i][j+1]);
+            }
+        }
+        dp=h;
+    }
+    return dp;
+}
+
+```
+---
+
+## Egg drop problem
+
+You are given k identical eggs and you have access to a building with n floors labeled from 1 to n.
+
+You know that there exists a floor f where 0 <= f <= n such that any egg dropped at a floor higher than f will break, and any egg dropped at or below floor f will not break.
+
+Each move, you may take an unbroken egg and drop it from any floor x (where 1 <= x <= n). If the egg breaks, you can no longer use it. However, if the egg does not break, you may reuse it in future moves.
+
+Return the minimum number of moves that you need to determine with certainty what the value of f is.
+
+```c
+
+class Solution {
+public:
+    int superEggDrop(int k, int n) {
+
+vector<vector<int>> dp(k+1,vector<int>(n+1,0));//min moves for i eggs and j floors
+
+for(int i=1;i<=n;i++)
+    dp[1][i]=i;//one egg
+
+for(int i=1;i<=k;i++)
+{
+    dp[i][1]=1;//one floor
+}
+
+for(int i=2;i<=k;i++)
+{
+    for(int j=2;j<=n;j++)
+    {
+        int l= 1;
+        int r = j;
+        while(l+1<r){
+            int mid = (l+r)/2;
+            if(dp[i-1][mid-1]<dp[i][j-mid]) l = mid;
+            else r = mid;
+        }
+        int x1 = max(dp[i-1][l-1],dp[i][j-l]);
+        int x2 = max(dp[i-1][r-1],dp[i][j-r]);
+        dp[i][j] = 1 + min(x1,x2);
+    }
+}
+return dp[k][n];
+        
+    }
+};
+
+```
+
+---
