@@ -1158,7 +1158,7 @@ vector<vector<int> > Solution::solve(int A, vector<vector<int> > &B){
 ```
 ---
 
-## Egg drop problem
+## Egg drop problem/Cut Logs
 
 You are given k identical eggs and you have access to a building with n floors labeled from 1 to n.
 
