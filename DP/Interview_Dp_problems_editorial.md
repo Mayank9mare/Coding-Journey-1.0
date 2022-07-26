@@ -1192,7 +1192,7 @@ for(int i=2;i<=k;i++)//dp[i][j]
         int r = j;
         while(l+1<r){
             int mid = (l+r)/2;
-            if(dp[i-1][mid-1]<dp[i][j-mid]) l = mid;
+            if(dp[i-1][mid-1]<dp[i][j-mid]) l = mid;//first dp is increasing as for same number of eggs if floors increases drops needed will increased only or remains same...second dp is decreasing so we need optimal point  
             else r = mid;
         }
         int x1 = max(dp[i-1][l-1],dp[i][j-l]);
