@@ -1503,3 +1503,41 @@ public:
 
 ```
 ---
+
+## Min cost to cut a stick
+
+Given an integer array cuts where cuts[i] denotes a position you should perform a cut at.
+
+You should perform the cuts in order, you can change the order of the cuts as you wish.
+
+The cost of one cut is the length of the stick to be cut, the total cost is the sum of costs of all cuts. When you cut a stick, it will be split into two smaller sticks (i.e. the sum of their lengths is the length of the stick before the cut). Please refer to the first example for a better explanation.
+
+```c
+
+class Solution {
+public:
+    int minCost(int i, int j,vector<int>&cuts, vector<vector<int>>&dp){
+        //base condition
+        if(i>j)return 0;
+        
+        //check the cache
+        if(dp[i][j]!=-1)return dp[i][j];
+        int mini=1e7;
+        for(int idx=i;idx<=j;idx++){
+            int cost=cuts[j+1]-cuts[i-1]+
+                minCost(i,idx-1,cuts,dp)+minCost(idx+1,j,cuts,dp);
+            mini=min(mini,cost);
+        }
+        return dp[i][j]=mini;
+    }
+    int minCost(int n, vector<int>& cuts) {
+        int sz=cuts.size();
+        cuts.push_back(n);
+        cuts.insert(cuts.begin(),0);
+        sort(cuts.begin(),cuts.end());
+        vector<vector<int>>dp(sz+1,vector<int>(sz+1,-1));
+        return minCost(1,sz,cuts,dp);
+    }
+};
+
+```
