@@ -1208,3 +1208,208 @@ return dp[k][n];
 ```
 
 ---
+
+## Word Combination
+
+You are given a string of length n and a dictionary containing k words. In how many ways can you create the string using the words?
+
+
+```c
+
+struct node{
+    map<char,int> m;
+    int end=0;
+    int cnt=0;
+
+};
+ node a[2000005];
+ int ptr=2;
+class Trie{
+    public:
+    
+    void init(){
+        for(int i=0;i<ptr;i++){
+            a[i].m.clear();
+            a[i].cnt=0;
+            a[i].end=0;
+        }
+        ptr=2;
+    }
+   
+    void insert(string s){
+        int cur=1;
+        for(auto x:s){
+            if(a[cur].m.find(x)==a[cur].m.end()){
+                a[cur].m[x]=ptr++;
+            }
+            cur=a[cur].m[x];
+            a[cur].cnt++;
+        }
+        a[cur].end=1;
+    }
+    bool search(string s){
+        int cur=1;
+        for(auto x:s){
+            if(a[cur].m.find(x)==a[cur].m.end()){
+                return false;
+            }
+            cur=a[cur].m[x];
+        }
+        return a[cur].end;
+    }
+  
+
+
+};
+int solve(){
+    Trie t;
+
+    string s;
+    cin>>s;
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        string x;
+        cin>>x;
+        t.insert(x);
+
+    }
+    int dp[s.size()+1];
+    mem0(dp);
+    n=s.size();// important  step
+    dp[n]=1;//number of words which starts from this index 
+    //if a word end at j then dp[i]=dp[j+1] because it will begin new word from j+1 and we need combinations such
+    //that it starts from 0 and end at n-1
+    for(int i=n-1;i>=0;i--){
+        char c=s[i]-'a';
+        int cur=1;
+        int ans=0;
+        for(int j=i;j<n;j++){
+            if(a[cur].m.find(s[j])==a[cur].m.end())break;
+            cur=a[cur].m[s[j]];
+            if(a[cur].end){
+                ans+=dp[j+1];
+                ans%=mod;
+            }
+
+        }
+        dp[i]=ans;
+
+    }
+    cout<<dp[0]<<endl;
+    return 0;
+
+}
+
+```
+
+---
+
+## Required Substring
+
+
+Your task is to calculate the number of strings of length n having a given pattern of length m as their substring. All strings consist of characters A–Z
+
+```c
+
+vector<int> kmp(string &s){
+    int n=s.size();
+    vector<int> p(n);
+    for(int i=1;i<n;i++){
+        int j=p[i-1];
+        while(j>0 && s[i]!=s[j]){
+            j=p[j-1];
+        }
+        if(s[i]==s[j]){
+            j++;
+        }
+        p[i]=j;
+    }
+    return p;
+}
+vector<int> pk;
+int dp[1005][101];
+int done[1005][101];
+ll state(int i,string &k,int n,int c,string &s){
+    //if(k.size() && k[0]=='B')debug(k);
+    if(n-i < (s.size()-c))return 0;
+    if((done[i][c])){
+        return dp[i][c];
+    }
+    //debug(i);
+    if(c==s.size()){
+        done[i][c]=1;
+        return dp[i][c]=power(26,(n-i))%mod;
+
+
+    }
+    //debug(k);
+    if(i==n){
+        if(c==s.size()){
+        //debug(k);
+        //debug(c);
+        return 1;
+        }
+        return 0;
+
+    }
+
+    ll res=0;
+    for(int j=0;j<26;j++){
+        char c1=char(int('A')+j);
+        k+=c1;
+        //debug(k);
+        string s1=s+'#'+k;
+        //debug(s1);
+        int t=c;
+        while(1){//using kmp here
+        if(s[t]==c1){
+            t++;
+            break;
+
+
+        }
+        else if(t){
+            t=pk[t-1];
+
+        }
+        else{
+            break;
+        }
+        }
+        
+        int maxa=t;
+        
+        //if(k[0]=='A')
+        //cout<<maxa<<endl;
+        res+=state(i+1,k,n,maxa,s);
+        res%=mod;
+        k.pop_back();
+
+    }
+    //debug(k);
+    //debug(c);
+    //debug(res);
+    done[i][c]=1;
+    return dp[i][c]=res;
+
+
+}
+
+int solve(){
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    pk=kmp(s);
+    mem0(done);
+    string ans="";
+    cout<<state(0,ans,n,0,s)<<endl;;
+
+    return 0;
+
+}
+
+```
+
+---
