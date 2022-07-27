@@ -1413,3 +1413,93 @@ int solve(){
 ```
 
 ---
+
+## Coin Change Problem
+
+You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin.
+
+
+```c
+
+class Solution {
+public:
+    int ans=INT_MAX;
+    int dp[13][10001];
+    long long state(vector<int> &a,int i,int amount){
+        //cout<<i<<" "<<amount<<endl;
+        if(i==a.size()|| amount<=0){
+            if(amount==0){
+                return 0;
+            }
+            else{
+                return INT_MAX;
+            }
+        }
+        if(dp[i][amount]!=-1){
+            return dp[i][amount];
+        }
+        long long ans=0;
+        if(a[i]<=amount){
+            ans=min(1+state(a,i,amount-a[i]),state(a,i+1,amount));
+            
+        }
+        else{
+            ans=state(a,i+1,amount);
+        }
+       return dp[i][amount]=ans;
+        
+    }
+    int coinChange(vector<int>& a, int amount) {
+        
+        int n=a.size();
+        memset(dp,-1,sizeof(dp));
+        long long ans=state(a,0,amount);
+        if(ans>=INT_MAX)return -1;
+        return ans;
+        
+        
+    }
+};
+
+```
+
+---
+
+## Subset Sum
+
+```c
+
+class Solution {
+public:
+    bool canPartition(vector<int>& a) {
+              int n=a.size();
+        int s=0;
+        for(auto x:a){
+            s+=x;
+            
+        }
+        if(s%2==1)return 0;
+        
+    
+        vector<vector<int>> dp(n+10,vector<int>(s+10));
+         dp[0][0]=1;
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=s;j++){
+                dp[i][j]=dp[i-1][j];
+                if(j-a[i-1]>=0){
+                    dp[i][j]=dp[i][j]|dp[i-1][j-a[i-1]];
+                }
+            }
+        }
+        s/=2;
+        return dp[n][s];
+        
+    }
+};
+
+```
+---
