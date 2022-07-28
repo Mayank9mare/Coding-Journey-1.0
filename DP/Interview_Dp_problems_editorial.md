@@ -1541,3 +1541,54 @@ public:
 };
 
 ```
+
+---
+
+## Palindromic Partitioning
+
+Given a string str, a partitioning of the string is a palindrome partitioning if every sub-string of the partition is a palindrome. Determine the fewest cuts needed for palindrome partitioning of the given string.
+
+```c
+
+class Solution{
+public:
+    int isPal(string &s,int i,int j){
+        while(i<=j){
+            if(s[i]!=s[j])return 0;
+            i++;
+            j--;
+        }
+        return 1;
+    }
+    int dp[505][505];
+    int state(int i,int j,string &s){
+        if(i==j){
+            return 0;
+        }
+        //string k="";
+        if(dp[i][j]!=-1)return dp[i][j];
+        
+        if(isPal(s,i,j))return dp[i][j]=0;
+        int ans=INT_MAX;
+        for(int x=i;x<j;x++){
+            int p=state(i,x,s)+state(x+1,j,s)+1;
+            ans=min(p,ans);
+            
+        }
+        return dp[i][j]=ans;
+        
+    }
+    int palindromicPartition(string str)
+    {
+        int n=str.size();
+        memset(dp,-1,sizeof(dp));
+        return state(0,n-1,str);
+        
+        // code here
+    }
+};
+
+
+```
+
+---
