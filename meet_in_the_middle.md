@@ -38,7 +38,6 @@ for(int l1=0;l1<n;l1++){
 ## Graph problem
 
 Find minimum vertex cover when n<=30 and m<=40
+<img src="https://raw.githubusercontent.com/Mayank9mare/ImagesForMarkdown/main/mim2.png">
 
-![image](https://raw.githubusercontent.com/Mayank9mare/ImagesForMarkdown/main/mim2.png)
-
-![image](https://raw.githubusercontent.com/Mayank9mare/ImagesForMarkdown/main/mim1.png)
+<img src="https://raw.githubusercontent.com/Mayank9mare/ImagesForMarkdown/main/mim1.png">
