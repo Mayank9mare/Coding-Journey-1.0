@@ -20,7 +20,7 @@ You are given two string S and T of length N. Figure out if we can get string T 
 
 Apply two substring reverse on s and add to set and the apply two on t and add to set
 
-```
+```c
 
 for(int l1=0;l1<n;l1++){
     for(int r1=l1;r1<n;r1++){
