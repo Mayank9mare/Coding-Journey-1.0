@@ -18,6 +18,7 @@ int main() {
     }
     int ans=0;
     //bell no for n
+    //Given a set of n elements, find number of ways of partitioning it. 
     for(int i=0;i<=n;i++){
         ans += s[n][i];
     }
