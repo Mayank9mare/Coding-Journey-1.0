@@ -182,7 +182,7 @@ int solve(){
     }
     vector<int> d;
     vector<int> p;
-    dijkstra(0,d,p);
+    dj(0,d,p);
     for(auto x:d){
         cout<<x<<sp;
     }

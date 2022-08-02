@@ -112,81 +112,51 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-
-// const int INF = 1000000000;
-// vector<vector<pair<int, int>>> adj;
-// void dijkstra(int s, vector<int> & d, vector<int> & p) {
-//     int n = adj.size();
-//     d.assign(n, INF);
-//     p.assign(n, -1);
-
-//     d[s] = 0;
-//     using pii = pair<int, int>;
-//     priority_queue<pii, vector<pii>, greater<pii>> q;
-//     q.push({0, s});
-//     while (!q.empty()) {
-//         int v = q.top().second;
-//         int d_v = q.top().first;
-//         q.pop();
-//         if (d_v != d[v])
-//             continue;
-
-//         for (auto edge : adj[v]) {
-//             int to = edge.first;
-//             int len = edge.second;
-
-//             if (d[v] + len < d[to]) {
-//                 d[to] = d[v] + len;
-//                 p[to] = v;
-//                 q.push({d[to], to});
-//             }
-//         }
-//     }
-// }
 vector<vector<pll>> adj;
-void dj(int s,vector<int> &d,vector<int> &p){
-    int n=adj.size();
-    d.assign(n,LONG_LONG_MAX);
-    p.assign(n,-1);
-    d[s]=0;
-    priority_queue<pll,vector<pll>,greater<pll>> pq;
-    pq.push({0,s});
-    while(pq.size()){
-        int v=pq.top().second;
-        int dv=pq.top().first;
-        pq.pop();
-        if(dv!=d[v])continue;
-        for(auto x:adj[v]){
-            int l=x.second;
-            int y=x.first;
-            if(dv+l<d[y]){
-                d[y]=dv+l;
-                p[y]=v;
-                pq.push({d[y],y});
+int dp[505][505];
+int solve(){
+    int n,m,q;
+    cin>>n>>m>>q;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<=n;j++){
+            if(i==j){
+                dp[i][j]=0;
+            }
+            else{
+                dp[i][j]=LONG_LONG_MAX;
             }
         }
     }
-
-
-}
-int solve(){
-    int n,m;
-    cin>>n>>m;
     adj.assign(n,vector<pll>(0));
     for(int i=0;i<m;i++){
         int x,y,z;
         cin>>x>>y>>z;
         x--;y--;
+        dp[x][y]=min(dp[x][y],z);
+        dp[y][x]=min(dp[y][x],z);
         adj[x].pb({y,z});
-        // adj[y].pb({x,z});
+        adj[y].pb({x,z});
     }
-    vector<int> d;
-    vector<int> p;
-    dijkstra(0,d,p);
-    for(auto x:d){
-        cout<<x<<sp;
+    for(int k=0;k<n;k++){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(dp[i][k]==LONG_LONG_MAX || dp[k][j]==LONG_LONG_MAX)continue;
+                dp[i][j]=min(dp[i][j],dp[i][k]+dp[k][j]);
+            }
+        }
     }
-    nl;
+    while(q--){
+        int x,y;
+        cin>>x>>y;
+        x--;y--;
+        if(dp[x][y]==LONG_LONG_MAX){
+            cout<<-1<<endl;
+            
+        }
+        else
+        cout<<dp[x][y]<<endl;
+    }
+
     return 0;
 
 }
