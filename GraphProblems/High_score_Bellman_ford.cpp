@@ -75,8 +75,8 @@
 #define precision(x) cout << fixed << setprecision(x);
 #define gcd(a,b)    __gcd((a),(b))
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
-//#define endl "\n"
-//#define int long long
+#define endl "\n"
+#define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
 const int x_dir[]={-1,-1,-1,0,0,1,1,1};
 const int y_dir[]={-1,0,1,-1,1,-1,0,1};
@@ -112,41 +112,66 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
+vector<vector<int>> adj;
+vector<vector<int>> g;
 
-int solve(){
-     string s;
-    cin>>s;
-    int n=s.size();
-    map<vector<int>,int> m;
-    vector<int> v(26,0);
-    int ans=0;
-    m[v]=-1;
-    for(int i=0;i<n;i++){
-        v[s[i]-'a']++;
-        int k=INT_MAX;
-        for(int j=0;j<26;j++){
-            if(v[j]==0)continue;
-            k=min(k,v[j]);
-        }
-        debug(v);
-        //cout<<k<<endl;
-        vector<int> v2=v;
-        for(int j=0;j<26;j++){
-             if(v2[j]==0)continue;
-            v2[j]-=k;
-            //cout<<v2[j]<<" ";
-        }
-        //cout<<endl;
-        debug(v2);
-        if(m.find(v)==m.end()){
-            m[v]=i;
-        }
-        debug(i-m[v2]);
-        ans=max(ans,i-m[v2]);
-        
 
+
+vector<int> v1,v2;
+
+void dfs1(int s){
+    v1[s]=1;
+    for(int x:adj[s]){
+        if(v1[x]==0){
+            dfs1(x);
+        }
     }
-    cout<<ans<<endl;
+}
+void dfs2(int s){
+    v2[s]=1;
+    for(int x:g[s]){
+        if(v2[x]==0){
+            dfs2(x);
+        }
+    }
+}
+int solve(){
+    int n,m;
+    cin>>n>>m;
+    adj.assign(n,vector<int>(0));
+    g.assign(n,vector<int>(0));
+    v1.assign(n,0);
+    v2.assign(n,0);
+    vector<int> d(n,LONG_LONG_MIN);
+    d[0]=0;
+    vector<vector<int>> edges;
+    for(int i=0;i<m;i++){
+        int x,y,z;
+        cin>>x>>y>>z;
+        x--;
+        y--;
+        adj[x].pb(y);
+        g[y].pb(x);
+        edges.pb({x,y,z});
+    }
+    dfs1(0);
+    dfs2(n-1);
+    for(int i=0;i<n;i++){
+        for(auto x:edges){
+            if(d[x[0]]==LONG_LONG_MIN)continue;
+            if(d[x[0]]+x[2]>d[x[1]]){
+                if(i==n-1){
+                    if(v1[x[1]] && v2[x[1]]){
+                        cout<<-1<<endl;
+                        return 0;
+
+                    }
+                }
+                d[x[1]]=d[x[0]]+x[2];
+            }
+        }
+    }
+    cout<<d[n-1]<<endl;
     return 0;
 
 }
@@ -159,7 +184,7 @@ signed main()
     #endif
     
     minato;
-    //w(t)
+   // w(t)
     solve();
 
 

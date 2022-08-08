@@ -494,6 +494,35 @@ int Solution::longestSubsequenceLength(const vector<int> &A) {
 }
 ```
 
+
+ Method 2
+ 
+```c
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& a) {
+        int n=a.size();
+        vector<int> v;
+        for(int i=0;i<n;i++){
+            auto x=lower_bound(v.begin(),v.end(),a[i]);
+            if(x==v.end()){
+                v.push_back(a[i]);
+            }
+            else{
+               int j=x-v.begin();
+            
+                v[j]=a[i];
+            }
+        }
+        return v.size();
+        
+        
+    }
+};
+
+```
+
 ---
 
 ## Smallest sequence with given Primes
@@ -1592,3 +1621,34 @@ public:
 ```
 
 ---
+
+## Tower of Hanoi
+
+The Tower of Hanoi game consists of three stacks (left, middle and right) and n round disks of different sizes. Initially, the left stack has all the disks, in increasing order of size from top to bottom.
+
+The goal is to move all the disks to the right stack using the middle stack. On each move you can move the uppermost disk from a stack to another stack. In addition, it is not allowed to place a larger disk on a smaller disk.
+
+The pattern here is :
+ - Shift 'n-1' disks from 'A' to 'B', using C.
+ - Shift last disk from 'A' to 'C'.
+ - Shift 'n-1' disks from 'B' to 'C', using A.
+
+```c
+
+
+START
+Procedure Hanoi(disk, source, dest, aux)
+
+   IF disk == 1, THEN
+      move disk from source to dest             
+   ELSE
+      Hanoi(disk - 1, source, aux, dest)     // Step 1
+      move disk from source to dest          // Step 2
+      Hanoi(disk - 1, aux, dest, source)     // Step 3
+   END IF
+   
+END Procedure
+STOP
+  
+
+```
