@@ -1652,3 +1652,42 @@ STOP
   
 
 ```
+
+---
+
+## S - Digit Sum
+
+Find the number of integers between 1 and K (inclusive) satisfying the following condition, modulo 10 
+9
+ +7:
+
+The sum of the digits in base ten is a multiple of D.
+
+```c
+
+ll dp[10005][101][2];
+ll state(ll id,ll sum,ll tight,string &s,int &d){
+    if(id==s.length()){
+         if(sum==0)return 1;
+        return 0;
+    }
+    if(dp[id][sum][tight]!=-1){
+        return dp[id][sum][tight];
+    }
+    int k=(tight)?(s[id]-'0'):9;
+    ll res=0;
+    for(int i=0;i<=k;i++){
+        int new_tight=(i==k)?tight:0;
+       add(res,state(id+1,(i+sum)%d,new_tight,s,d));
+ 
+    }
+    if(res<0){
+        res+=mod;
+    }
+    return dp[id][sum][tight]=res;
+ 
+}
+
+```
+
+---
