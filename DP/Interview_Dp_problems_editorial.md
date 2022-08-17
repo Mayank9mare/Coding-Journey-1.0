@@ -1691,3 +1691,85 @@ ll state(ll id,ll sum,ll tight,string &s,int &d){
 ```
 
 ---
+
+## D2. Burenka and Traditions (hard version)
+
+Burenka is the crown princess of Buryatia, and soon she will become the n-th queen of the country. There is an ancient tradition in Buryatia — before the coronation, the ruler must show their strength to the inhabitants. To determine the strength of the n-th ruler, the inhabitants of the country give them an array of a of exactly n numbers, after which the ruler must turn all the elements of the array into zeros in the shortest time. The ruler can do the following two-step operation any number of times:
+
+select two indices l and r, so that 1≤l≤r≤n and a non-negative integer x, then
+for all l≤i≤r assign ai:=ai⊕x, where ⊕ denotes the bitwise XOR operation. It takes ⌈(r−l+1)/2⌉ seconds to do this operation, where ⌈y⌉ denotes y rounded up to the nearest integer.
+Help Burenka calculate how much time she will need.
+
+Easy version
+
+```c
+
+int dp[5001][1<<13];
+int solve(){
+    def(a,n);
+    
+    for(int i=0;i<n;i++){
+        for(int j=0;j<(1<<13);j++){
+            dp[i][j]=INT_MAX;
+        }
+    }
+    dp[0][a[0]]=0;
+    for(int i=0;i<(1<<13);i++){
+        dp[0][i]=min(1,dp[0][i]);
+    }
+    for(int i=1;i<n;i++){
+        
+
+
+        for(int j=0;j<(1<<13);j++){
+            dp[i][a[i]]=min(dp[i][a[i]],dp[i-1][j^a[i]]+(1));
+            dp[i][j^a[i]]=min(dp[i][j^a[i]],dp[i-1][j]+(j!=0));
+
+        }
+
+    }
+    int ans=INT_MAX;
+    for(int i=0;i<(1<<13);i++){
+        ans=min(ans,dp[n-1][i]+(i!=0));
+
+    }
+   // cout<<dp[2][5]<<endl;
+    cout<<ans<<endl;
+    
+    return 0;
+
+}
+
+```
+
+Hard version
+
+```c
+
+int solve(){
+    def(a,n);
+    map<int,int> m;
+    m[0]=0;
+    int last=0;
+    int x=0;
+    int ans=n;
+    for(int i=0;i<n;i++){
+        x^=a[i];
+        //cout<<x<<endl;
+        if(m.find(x)!=m.end()){
+            if(m[x]>=last){
+                //cout<<i<<endl;
+                ans--;
+                last=i;
+            }
+          }
+        m[x]=i;
+    }
+    cout<<ans<<endl;
+    return 0;
+
+}
+
+```
+
+---
