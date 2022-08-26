@@ -112,35 +112,29 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-#define px second
-#define py first
-typedef pair<long long, long long> pairll;
-pairll pnts [MAX];
-int compare(pairll a, pairll b)
-{ 
-        return a.px<b.px; 
-}
-double closest_pair(pairll pnts[],int n)
-{
-        sort(pnts,pnts+n,compare);
-        double best=INF;
-        set<pairll> box;
-        box.insert(pnts[0]);
-        int left = 0;
-        for (int i=1;i<n;++i)
-        {
-            while (left<i && pnts[i].px-pnts[left].px > best)
-                box.erase(pnts[left++]);
-            for(typeof(box.begin()) it=box.lower_bound(make_pair(pnts[i].py-best, pnts[i].px-best));it!=box.end() && pnts[i].py+best>=it->py;it++)
-                best = min(best, sqrt(pow(pnts[i].py - it->py, 2.0)+pow(pnts[i].px - it->px, 2.0)));
-            box.insert(pnts[i]);
+int solve(vector<vector<int>>& points) {
+    sort(points.begin(), points.end());
+    set<pair<ll, ll>> st;
+    ll dis = 1e18;
+    int j = 0;
+    for (int i = 0; i < points.size(); ++i) {
+        ll d = ceil(sqrt(dis));
+        while (points[i][0] - points[j][0] >= d) {
+            st.erase({points[j][1], points[j][0]});
+            ++j;
         }
-        return best;
+        auto it = st.lower_bound({points[i][1] - d, points[i][0]});
+        auto it2 = st.upper_bound({points[i][1] + d, points[i][0]});
+        for (auto cur = it; cur != it2; cur++) {
+            ll x = abs((*cur).second - points[i][0]);
+            ll y = abs((*cur).first - points[i][1]);
+            dis = min(dis, x * x + y * y);
+        }
+        st.insert({points[i][1], points[i][0]});
+    }
+    return dis;
 }
-int solve(){
-    return 0;
 
-}
 
 
 signed main()
