@@ -86,7 +86,12 @@ using namespace std;
 const int MAXN=1e5;
 int n,tree[4*MAXN];
 int A[MAXN];
-int lazy[4*MAXN];
+int lazy[4*MAXN];//tells if a node is containing some unpropagated values
+int upd[4*MAXN];//the value of unpropagated node => memory of the man
+
+
+
+
 int f(int x,int y){
     return (x+y);
 }
@@ -156,84 +161,55 @@ int query(int node, int start, int end, int l, int r)
     return f(p1,p2);
 }
 
-void updateRange1(int node, int start, int end, int l, int r, int val)
-{
-    // out of range
-    if (start > end or start > r or end < l)
-        return;
-
-    // Current node is a leaf node
-    if (start == end)
-    {
-        // Add the difference to current node
-        tree[node] += val;
-        return;
+void apply(int node,int start,int end,int val){
+    tree[node]+=(end-start+1)*val;//set coorect info at this node
+    if(start!=end){//not a leaf value then it is lazy
+        lazy[node]=1;
+        upd[node]+=val;
     }
-
-    // If not a leaf node, recur for children.
-    int mid = (start + end) / 2;
-    updateRange1(node*2, start, mid, l, r, val);
-    updateRange1(node*2 + 1, mid + 1, end, l, r, val);
-
-    // Use the result of children calls to update this node
-    tree[node] = f(tree[node*2],tree[node*2+1]);
 }
+//asiigning tasks to his children
+void pushdown(int node,int start,int end){
+    if(lazy[node]){
+        lazy[node]=0;
+        int mid=(start+end)/2;
+        apply(2*node,start,mid,upd[node]);
+        apply(2*node +1,mid+1,end,upd[node]);
+        upd[node]=0;
+    } 
 
+}
 
 void updateRange(int node, int start, int end, int l, int r, int val)
 {
-    if(lazy[node] != 0)
-    { 
-        // This node needs to be updated
-        tree[node] += (end - start + 1) * lazy[node];    // Update it
-        if(start != end)
-        {
-            lazy[node*2] += lazy[node];                  // Mark child as lazy
-            lazy[node*2+1] += lazy[node];                // Mark child as lazy
-        }
-        lazy[node] = 0;                                  // Reset it
-    }
-    if(start > end or start > r or end < l)              // Current segment is not within range [l, r]
-        return;
-    if(start >= l and end <= r)
-    {
-        // Segment is fully within range
-        tree[node] += (end - start + 1) * val;
-        if(start != end)
-        {
-            // Not leaf node
-            lazy[node*2] += val;
-            lazy[node*2+1] += val;
-        }
+    if(start>r || end<l){// no overlap
         return;
     }
-    int mid = (start + end) / 2;
-    updateRange(node*2, start, mid, l, r, val);        // Updating left child
-    updateRange(node*2 + 1, mid + 1, end, l, r, val);   // Updating right child
-    tree[node] = tree[node*2] + tree[node*2+1];        // Updating root with max value 
+    if(l<=start && end<=r){//complete overlap
+        //ask the man to remember it
+        apply(node,start,end,val);
+        return;
+    }
+    //partial overlap
+    pushdown(node,start,end);//remove the lazy tag inorder for children to have correct values
+    int mid=(start+end)/2;
+    updateRange(2*node,start,mid,l,r,val);
+    updateRange(2*node +1,mid+1,end,l,r,val);
+    tree[node]=f(tree[2*node],tree[2*node +1]);
 }
 
 int queryRange(int node, int start, int end, int l, int r)
 {
-    if(start > end or start > r or end < l)
-        return 0;         // Out of range
-    if(lazy[node] != 0)
-    {
-        // This node needs to be updated
-        tree[node] += (end - start + 1) * lazy[node];            // Update it
-        if(start != end)
-        {
-            lazy[node*2] += lazy[node];         // Mark child as lazy
-            lazy[node*2+1] += lazy[node];    // Mark child as lazy
-        }
-        lazy[node] = 0;                 // Reset it
-    }
-    if(start >= l and end <= r)             // Current segment is totally within range [l, r]
+    if(start > r || end < l)//no overlap
+        return border;         // Out of range
+   if(l<=start && end<=r){//complete iverlap
         return tree[node];
-    int mid = (start + end) / 2;
-    int p1 = queryRange(node*2, start, mid, l, r);         // Query left child
-    int p2 = queryRange(node*2 + 1, mid + 1, end, l, r); // Query right child
-    return (p1 + p2);
+   }
+   pushdown(node,start,end);//remove the lazy tag inorder for children to have correct values
+   int mid=(start+end)/2;
+   int p1=queryRange(2*node,start,mid,l,r);
+   int p2=queryRange(2*node+1,mid+1,end,l,r);
+   return f(p1,p2);
 }
 
 int solve(){
@@ -242,7 +218,8 @@ int solve(){
         A[i]=1;
     }
     build(1,0,9);
-    cout<<query(1,0,9,0,5)<<endl;
+    updateRange(1,0,9,0,5,2);
+    cout<<queryRange(1,0,9,0,5)<<endl;
     return 0;
 
 }
