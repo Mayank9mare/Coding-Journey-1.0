@@ -87,6 +87,10 @@ const int MAXN=1e5;
 int n,tree[4*MAXN];
 int A[MAXN];
 int lazy[4*MAXN];
+int f(int x,int y){
+    return (x+y);
+}
+int border=0;//INT_MIN in maxima and INT_MAX in minima
 
 void build(int node, int start, int end)
 {
@@ -103,7 +107,7 @@ void build(int node, int start, int end)
         // Recurse on the right child
         build(2*node+1, mid+1, end);
         // Internal node will have the sum of both of its children
-        tree[node] = tree[2*node] + tree[2*node+1];
+        tree[node] = f(tree[2*node],tree[2*node+1]);
     }
 }
 
@@ -129,7 +133,7 @@ void update(int node, int start, int end, int idx, int val)
             update(2*node+1, mid+1, end, idx, val);
         }
         // Internal node will have the sum of both of its children
-        tree[node] = tree[2*node] + tree[2*node+1];
+        tree[node] = f(tree[2*node],tree[2*node+1]);
     }
 }
 
@@ -138,7 +142,7 @@ int query(int node, int start, int end, int l, int r)
     if(r < start or end < l)
     {
         // range represented by a node is completely outside the given range
-        return 0;
+        return border;
     }
     if(l <= start and end <= r)
     {
@@ -149,7 +153,7 @@ int query(int node, int start, int end, int l, int r)
     int mid = (start + end) / 2;
     int p1 = query(2*node, start, mid, l, r);
     int p2 = query(2*node+1, mid+1, end, l, r);
-    return (p1 + p2);
+    return f(p1,p2);
 }
 
 void updateRange1(int node, int start, int end, int l, int r, int val)
@@ -172,7 +176,7 @@ void updateRange1(int node, int start, int end, int l, int r, int val)
     updateRange1(node*2 + 1, mid + 1, end, l, r, val);
 
     // Use the result of children calls to update this node
-    tree[node] = tree[node*2] + tree[node*2+1];
+    tree[node] = f(tree[node*2],tree[node*2+1]);
 }
 
 
@@ -233,6 +237,12 @@ int queryRange(int node, int start, int end, int l, int r)
 }
 
 int solve(){
+    int n=10;
+    for(int i=0;i<n;i++){
+        A[i]=1;
+    }
+    build(1,0,9);
+    cout<<query(1,0,9,0,5)<<endl;
     return 0;
 
 }
