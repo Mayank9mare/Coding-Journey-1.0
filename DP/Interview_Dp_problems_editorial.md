@@ -1773,3 +1773,36 @@ int solve(){
 ```
 
 ---
+
+## Strictly Increasing Array
+
+Given an array nums[] of N positive integers. Find the minimum number of operations required to modify the array such that array elements are in strictly increasing order (A[i] < A[i+1]).
+Changing a number to greater or lesser than original number is counted as one operation.
+
+The problem is variation of Longest Increasing Subsequence. The numbers which are already a part of LIS need not to be changed. So minimum elements to change is difference of size of array and number of elements in LIS. Note that we also need to make sure that the numbers are integers. So while making LIS, we do not consider those elements as part of LIS that cannot form strictly increasing by inserting elements in middle.
+
+```c
+int minRemove(int arr[], int n)
+{
+    int LIS[n], len = 0;
+ 
+    // Mark all elements of LIS as 1
+    for (int i = 0; i < n; i++)
+        LIS[i] = 1;
+ 
+    // Find LIS of array
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (arr[i] > arr[j]
+                && (i - j) <= (arr[i] - arr[j])) {
+                LIS[i] = max(LIS[i], LIS[j] + 1);
+            }
+        }
+        len = max(len, LIS[i]);
+    }
+ 
+    // Return min changes for array to strictly increasing
+    return n - len;
+}
+```
+---
