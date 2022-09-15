@@ -157,9 +157,10 @@ vector<int> multiply(vector<int>& a, vector<int>& b) {
     vector<int> result(n);
     for (int i = 0; i < n; i++)
         result[i] = round(fa[i].real());
-    result.resize(a.size()+b.size()-1);
+    //result.resize(a.size()+b.size()-1);
     return result;
 }
+
 int solve(){
     return 0;
 

@@ -114,39 +114,6 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 //KnightMareVoid
 
 int solve(){
-     string s;
-    cin>>s;
-    int n=s.size();
-    map<vector<int>,int> m;
-    vector<int> v(26,0);
-    int ans=0;
-    m[v]=-1;
-    for(int i=0;i<n;i++){
-        v[s[i]-'a']++;
-        int k=INT_MAX;
-        for(int j=0;j<26;j++){
-            if(v[j]==0)continue;
-            k=min(k,v[j]);
-        }
-        debug(v);
-        //cout<<k<<endl;
-        vector<int> v2=v;
-        for(int j=0;j<26;j++){
-             if(v2[j]==0)continue;
-            v2[j]-=k;
-            //cout<<v2[j]<<" ";
-        }
-        //cout<<endl;
-        debug(v2);
-        if(m.find(v)==m.end()){
-            m[v]=i;
-        }
-        debug(i-m[v2]);
-        ans=max(ans,i-m[v2]);
-        
-
-    }
-    cout<<ans<<endl;
     return 0;
 
 }
@@ -159,7 +126,7 @@ signed main()
     #endif
     
     minato;
-    //w(t)
+    w(t)
     solve();
 
 
