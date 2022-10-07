@@ -1,5 +1,12 @@
  # **DP editorial**
 
+
+
+  
+```c
+Every Dp is like finding longest path in some DAG(Directed Acyclic Graph)
+```
+
 ---
 
 ## Longest common subsequence
