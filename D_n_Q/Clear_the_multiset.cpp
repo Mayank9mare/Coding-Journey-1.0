@@ -112,7 +112,8 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-int solve(int l, int r) {
+vector<int> a;
+int state(int l, int r) {
     if (l > r)
         return 0;
     // we will apply type 1 operation (min a_i) times
@@ -124,7 +125,16 @@ int solve(int l, int r) {
     }
     assert(idx != -1);
     // return minimum of our two options: solve recursively, or just apply type 2 operations to each element
-    return min(solve(l, idx - 1) + solve(idx + 1, r) + mn, r - l + 1);
+    return min(state(l, idx - 1) + state(idx + 1, r) + mn, r - l + 1);
+}
+int solve(){
+    a.clear();
+    int n;
+    cin>>n;
+    a.resize(n);
+    for(int i=0;i<n;i++)cin>>a[i];
+    cout<<state(0,n-1)<<endl;
+    
 }
 
 
@@ -136,7 +146,7 @@ signed main()
     #endif
     
     minato;
-    w(t)
+   // w(t)
     solve();
 
 
