@@ -1813,3 +1813,86 @@ int minRemove(int arr[], int n)
 }
 ```
 ---
+
+## Red Blue Flowers
+
+Chef has a garden containing NN cells. The i-th cell has R_iR red flowers and B_iB blue flowers. Chef can collect only one type of flowers (either red or blue) from each cell.
+
+Let X denote the total number of red flowers Chef collects and Y denote the total number of blue flowers Chef collects. Chef wants to maximize the value of min(X,Y). Can you help Chef?
+
+n<=100
+Ri Li <=200
+
+[Link](https://www.codechef.com/submit/RBFLOWERS?tab=statement)
+
+```c
+
+int dp[105][20005];//max Ri we can get if we have j Li till perfix i
+
+int solve(){
+    int n;
+    cin>>n;
+    vector<int> v1;
+    vector<int> v2;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<20005;j++){
+            dp[i][j]=-1;
+        }
+    }
+
+   int s=0;
+    for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        s+=x;
+        v1.pb(x);
+    }
+     for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        v2.pb(x);
+    }
+    dp[0][0]=v2[0];
+    dp[0][v1[0]]=0;
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<=n*200;j++){
+            dp[i+1][j+v1[i+1]]=dp[i][j];
+        }
+        for(int j=0;j<=n*200;j++){
+            if(dp[i][j]==-1)continue;
+            dp[i+1][j]=max(dp[i+1][j],dp[i][j]+v2[i+1]);
+        }
+    }
+    int ans=0;
+    for(int j = 0; j <= n*200; j++) ans = max(ans, min(j, dp[n - 1][j]));
+    cout<<ans<<endl;  
+
+}
+
+```
+
+Method 2
+
+
+```c
+void f(int ind, vector<int>& a, vector<int>& b,int sa,int sb,vector<vector<int>>& dp) {
+    if(ind<0){
+        ans = max(ans,min(sa,sb));
+        return;
+    }
+    
+    if(dp[ind][sa]!=-1 && dp[ind][sa] >=sb) return ;
+    
+    dp[ind][sa] = sb;
+    
+    f(ind-1,a,b,sa+a[ind],sb,dp);
+    f(ind-1,a,b,sa,sb+b[ind],dp);
+    return ;
+}
+
+int main(){
+        f(n-1,a,b,0,0,dp);
+        cout<<ans<<endl;;
+}
+
+```
