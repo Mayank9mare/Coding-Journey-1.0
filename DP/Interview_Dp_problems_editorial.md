@@ -1825,6 +1825,8 @@ Ri Li <=200
 
 [Link](https://www.codechef.com/submit/RBFLOWERS?tab=statement)
 
+Method 1
+ 
 ```c
 
 int dp[105][20005];//max Ri we can get if we have j Li till perfix i
@@ -1905,3 +1907,70 @@ void solve()
 }
 
 ```
+
+Method 3
+
+```c
+
+
+int dp[105][20005];
+int done[105][20005];
+int dfs(int i,int x,vector<int> &v1,vector<int> &v2){
+    if(i==v1.size()){
+        if(x<=0)return 0;
+        return INT_MIN;
+    }
+    if(done[i][x])return dp[i][x];
+    done[i][x]=1;
+    int f1=dfs(i+1,x-v1[i],v1,v2);
+    int f2=dfs(i+1,x,v1,v2)+v2[i];
+    return dp[i][x]=max({f1,f2});
+    
+}
+
+int solve(){
+    int n;
+    cin>>n;
+  vector<int> v1;
+vector<int> v2;
+    // p1.clear();
+    // p2.clear();
+    // mem1(mp1);
+    // mem1(mp2);
+   //dp.clear();
+   int s=0;
+    for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        s+=x;
+        v1.pb(x);
+    }
+     for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        v2.pb(x);
+    }
+    int l=0,r=s+1;
+    while(l+1<r){
+        int m=(l+r)/2;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<=20004;j++){
+                done[i][j]=0;
+                dp[i][j]=INT_MIN;
+            }
+        }
+        if(dfs(0,m,v1,v2)>=m){
+            l=m;
+
+        }
+        else{
+            r=m;
+        }
+    }
+    cout<<l<<endl;
+    return 0;
+   
+}
+```
+
+---
