@@ -1875,24 +1875,33 @@ Method 2
 
 
 ```c
-void f(int ind, vector<int>& a, vector<int>& b,int sa,int sb,vector<vector<int>>& dp) {
-    if(ind<0){
-        ans = max(ans,min(sa,sb));
+int  dp[105][20005];
+
+void dfs(int i, int x, int y)
+{
+    if(i == n)
+    {
+        ans = max(ans, min(x, y));
         return;
     }
-    
-    if(dp[ind][sa]!=-1 && dp[ind][sa] >=sb) return ;
-    
-    dp[ind][sa] = sb;
-    
-    f(ind-1,a,b,sa+a[ind],sb,dp);
-    f(ind-1,a,b,sa,sb+b[ind],dp);
-    return ;
+    if(dp[i][x] != 0 && dp[i][x] >= y)
+        return;
+    dp[i][x] = y;
+    dfs(i+1, x + a[i], y);
+    dfs(i+1, x, y + b[i]);
 }
 
-int main(){
-        f(n-1,a,b,0,0,dp);
-        cout<<ans<<endl;;
+void solve()
+{
+    cin >> n;
+    ans = 0;
+    memset(dp, 0, sizeof(dp));
+    for(int i = 0; i < n; i++)
+        cin >> a[i];
+    for(int i = 0; i < n; i++)
+        cin >> b[i];
+    dfs(0, 0, 0);
+    cout << ans << endl;
 }
 
 ```
