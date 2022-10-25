@@ -75,6 +75,7 @@
 #define precision(x) cout << fixed << setprecision(x);
 #define gcd(a,b)    __gcd((a),(b))
 #define lcm(a,b)    ((a)*(b)) / gcd((a),(b))
+#define TT pair<int,vector<pll>>
 //#define endl "\n"
 //#define int long long
 const int dx[4]={1,0,0,-1}, dy[4]={0,1,-1,0};
@@ -112,7 +113,7 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-pair<int,vector<pll>> myCode(vector<int> a,int k=1){
+TT myCode(vector<int> a,int k=1){
 
     //Logic
     int n=a.size();
@@ -168,7 +169,7 @@ pair<int,vector<pll>> myCode(vector<int> a,int k=1){
 
 
 }
-pair<int,vector<pll>>  Bforce(vector<int> a,int k=1){
+TT  Bforce(vector<int> a,int k=1){
     int n=a.size();
     int c=0;
     for(int i=0;i<n;i++){
@@ -239,8 +240,8 @@ int pipeline(){
 
         int k=rand()%n;
 
-        pair<int,vector<pll>> v1=myCode(a,k);
-        pair<int,vector<pll>> v2=Bforce(a,k);
+        TT v1=myCode(a,k);
+        TT v2=Bforce(a,k);
         if(v1!=v2){
             cout<<a.size()<<endl;
             for(auto x:a){
