@@ -113,88 +113,41 @@ template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_pr
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
 
-
-ll power(ll x,ll y){
-    ll p=mod;
-    ll res =1;
-    x=x%p;
-    while(y>0){
-        if(y&1){
-            res=(res*x)%p;
-        }
-            y=y>>1;
-            x=(x*x)%p;
-        }
-        return res;
-
-    
-}
-ll modInverse(ll n){
-    ll p=mod;
-    return power(n,p-2);
-}
-ll expo(int x,int y){
-    if(y==0)return 1;
-    ll res=expo(x,y/2);
-    if(y%2==1){
-        return (((res*res)%mod)*x)%mod;
-    }
-    else{
-        return (res*res)%mod; 
-    }
-}
-//For each divisor i, the number of times it occurs from 1 to n is ⌊n/i⌋. 
-//Thus the sum to be calculated is equivalent to ∑ni=1⌊ni⌋i.
-//For the first part, i≤n−−√, we will simply find the sum of terms for 1 to n−−√. This can be done in O(n−−√)
 int solve(){
-    int n;
-    cin>>n;
-    int ans=0;
-    // for(int i=1;i<=y;i++){
-    //     int p=(n/i);
-    //     ans+=((p)*i)%mod;
-    //     ans%=mod;
-    // }
-    
-    for(ll i=1,j;i<=n;i=j){
-        // 		ll q = n/i; j = n/q+1;
-		// // process terms [i..j-1] of the summation
-		// // since they all have the same quotient q
-		// // now we add q*sum(i..j-1) to the answer
-		// ll x = j-i, y = i+j-1; // x*y/2 = sum(i..j-1)
-		// if (x%2 == 0) x /= 2;
-		// else y /= 2;
-		// x %= mod, y %= mod;
-		// ans = (ans+q%mod*x%mod*y%mod)%mod;
-        
-        ll q=n/i;
-        
-        j=n/q+1;
-        ll r=((((j%mod)*((j-1)%mod)%mod))*power(2,mod-2)%mod)%mod;
-        
-        ll l=((((i%mod)*((i-1)%mod)%mod))*power(2,mod-2)%mod)%mod;
-        //debug(l);
-        //debug(r);
-        
-        ll r2=(r%mod-l%mod+mod)%mod;
-        
-        // ll x = j-i, y = i+j-1; // x*y/2 = sum(i..j-1)
-		// if (x%2 == 0) x /= 2;
-		// else y /= 2;
-		// x %= mod, y %= mod;
-        //debug((x*y)%mod);
+    int n,k;
+    cin>>n>>k;
+    int a[k];
+    for(int i=0;i<k;i++)cin>>a[i];
+    ll ans=0;
+    for(int i=1;i<(1ll<<k);i++){
+        vector<int> v;
+        for(int j=0;j<k;j++){
+            if(i&(1ll<<j)){
+                v.pb(a[j]);
 
-        //debug(r2);
-        ans=(ans+(q%mod)*r2)%mod;
+            }
+        }
+        ll p=1;
+        for(auto x:v){
+            if(p>n/x){
+                p=n+1;
+                break;
 
-        ans%=mod;
+            }
+            p*=x;
+
+        }
+        if(v.size()%2){
+            ans+=(n/p);
+        }
+        else{
+            ans-=(n/p);
+        }
 
     }
-      
+    //ans+=n;
     cout<<ans<<endl;
     return 0;
-
- 
 
 }
 
@@ -206,7 +159,7 @@ signed main()
     #endif
     
     minato;
-    //w(t)
+   // w(t)
     solve();
 
 

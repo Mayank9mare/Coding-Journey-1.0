@@ -112,89 +112,48 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 //KnightMareVoid
-
-
-ll power(ll x,ll y){
-    ll p=mod;
-    ll res =1;
-    x=x%p;
-    while(y>0){
-        if(y&1){
-            res=(res*x)%p;
+vector<int> prime;
+int mu[1000005];
+bool use[1000005];
+int c[1000005];
+//μ(X) is zero if X is not a square-free integer 79.
+// μ(X) is 1 if X is a square-free integer and the number of X’s prime divisors is even.
+// μ(X) is -1 if X is a square-free integer and the number of X’s prime divisors is odd.
+void _mu(int n){
+    mu[1]=1;
+    for(int i=2;i<=n;++i){
+        if(!use[i])mu[i]=-1,prime.push_back(i);
+        for(int j=0;j<prime.size();++j){
+            if(i*prime[j]>n)break;
+            use[i*prime[j]]=1;
+            if(!(i%prime[j])) break;
+            else mu[i*prime[j]]=-mu[i];
         }
-            y=y>>1;
-            x=(x*x)%p;
-        }
-        return res;
-
-    
+    }return ;
 }
-ll modInverse(ll n){
-    ll p=mod;
-    return power(n,p-2);
-}
-ll expo(int x,int y){
-    if(y==0)return 1;
-    ll res=expo(x,y/2);
-    if(y%2==1){
-        return (((res*res)%mod)*x)%mod;
-    }
-    else{
-        return (res*res)%mod; 
-    }
-}
-//For each divisor i, the number of times it occurs from 1 to n is ⌊n/i⌋. 
-//Thus the sum to be calculated is equivalent to ∑ni=1⌊ni⌋i.
-//For the first part, i≤n−−√, we will simply find the sum of terms for 1 to n−−√. This can be done in O(n−−√)
+const int m=1e6+1;
 int solve(){
-    int n;
-    cin>>n;
-    int ans=0;
-    // for(int i=1;i<=y;i++){
-    //     int p=(n/i);
-    //     ans+=((p)*i)%mod;
-    //     ans%=mod;
-    // }
-    
-    for(ll i=1,j;i<=n;i=j){
-        // 		ll q = n/i; j = n/q+1;
-		// // process terms [i..j-1] of the summation
-		// // since they all have the same quotient q
-		// // now we add q*sum(i..j-1) to the answer
-		// ll x = j-i, y = i+j-1; // x*y/2 = sum(i..j-1)
-		// if (x%2 == 0) x /= 2;
-		// else y /= 2;
-		// x %= mod, y %= mod;
-		// ans = (ans+q%mod*x%mod*y%mod)%mod;
-        
-        ll q=n/i;
-        
-        j=n/q+1;
-        ll r=((((j%mod)*((j-1)%mod)%mod))*power(2,mod-2)%mod)%mod;
-        
-        ll l=((((i%mod)*((i-1)%mod)%mod))*power(2,mod-2)%mod)%mod;
-        //debug(l);
-        //debug(r);
-        
-        ll r2=(r%mod-l%mod+mod)%mod;
-        
-        // ll x = j-i, y = i+j-1; // x*y/2 = sum(i..j-1)
-		// if (x%2 == 0) x /= 2;
-		// else y /= 2;
-		// x %= mod, y %= mod;
-        //debug((x*y)%mod);
-
-        //debug(r2);
-        ans=(ans+(q%mod)*r2)%mod;
-
-        ans%=mod;
-
+    def(a,n);
+    int mx=*max_element(a,a+n);
+    _mu(mx+1);
+    ll ans=0;
+    //Sigma mu[i]*(d(k)C_2) where d(k}=no of numbers divisible by k
+    for(int i=0;i<n;i++){
+        c[a[i]]++;
     }
-      
+    for(int i=1;i<=mx;i++){
+        ll p=0;
+        for(int j=i;j<=mx;j+=i){
+            p+=c[j];
+        }
+        p=(p*(p-1))/2;
+        //p%=mod;
+        ans+=(mu[i]*p);
+        //ans%=mod;
+    }
     cout<<ans<<endl;
-    return 0;
 
- 
+    return 0;
 
 }
 
@@ -206,7 +165,7 @@ signed main()
     #endif
     
     minato;
-    //w(t)
+   // w(t)
     solve();
 
 

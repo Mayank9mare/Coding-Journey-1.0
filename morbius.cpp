@@ -83,6 +83,9 @@ const int y_dir[]={-1,0,1,-1,1,-1,0,1};
 
 using namespace std;
 //KnightMareVoid
+//μ(X) is zero if X is not a square-free integer 79.
+// μ(X) is 1 if X is a square-free integer and the number of X’s prime divisors is even.
+// μ(X) is -1 if X is a square-free integer and the number of X’s prime divisors is odd.
 vector<int> prime;
 int mu[100005];
 bool use[100005];
