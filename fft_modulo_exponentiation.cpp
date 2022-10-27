@@ -316,6 +316,8 @@ Matrix fast_exponentiation(Matrix m, int power)
 
     return result;
 }
+
+//https://my.newtonschool.co/playground/code/4epxibe4x4lj/
 int solve(){
     int n,p,k;
     cin>>n>>p>>k;
