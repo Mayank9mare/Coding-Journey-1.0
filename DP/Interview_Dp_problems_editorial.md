@@ -1204,6 +1204,20 @@ Each move, you may take an unbroken egg and drop it from any floor x (where 1 <=
 
 Return the minimum number of moves that you need to determine with certainty what the value of f is.
 
+```py
+        for i in range(1, K+1):
+            dp[i][0] = 0
+            dp[i][1] = 1
+        for j in range(1, N+1):
+            dp[1][j] = j
+        
+        for i in range(2, K+1):
+            for j in range(2, N+1):
+                for k in range(1, j+1):
+                    dp[i][j] = min(dp[i][j], 1 + max(dp[i-1][k-1], dp[i][j-k]))
+        return dp[K][N]
+```
+
 ```c
 
 class Solution {
