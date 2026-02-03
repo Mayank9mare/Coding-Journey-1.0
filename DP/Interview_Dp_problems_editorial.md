@@ -249,7 +249,8 @@ int Solution::minDistance(string A, string B) {
 ## Scramble String
 
 ```c
-int  dp[101][101][101];
+int  dp[101][101][101] // Is the substring of s1 starting at index i with length s a scramble of the substring of s2 starting at index j with length s?
+;
 int A[26];
 string s1,s2;
 int solve2(int i,int j,int s){
